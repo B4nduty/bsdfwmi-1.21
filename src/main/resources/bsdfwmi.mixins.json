@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "banduty.bsdfwmi.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"ItemEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

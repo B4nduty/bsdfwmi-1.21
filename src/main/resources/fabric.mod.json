@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "bsdfwmi",
+	"version": "${version}",
+	"name": "BsDFWMI",
+	"description": "Optimization Mod for Item Entities",
+	"authors": [
+		"Banduty"
+	],
+	"contact": {
+		"sources": "https://github.com/B4nduty",
+		"issues": "https://discord.gg/vbZ2zTHGNA"
+	},
+	"license": "All Rights Reserved",
+	"icon": "assets/bsdfwmi/bsdfwmi.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"banduty.bsdfwmi.BsDFWMI"
+		],
+		"modmenu": [
+			"banduty.bsdfwmi.compat.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		"bsdfwmi.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*",
+		"cloth-config": ">=15.0.127-fabric"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
