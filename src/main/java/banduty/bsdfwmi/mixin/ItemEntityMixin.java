@@ -4,7 +4,6 @@ import banduty.bsdfwmi.BsDFWMI;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.Ownable;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -12,10 +11,11 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemEntity.class)
-public abstract class ItemEntityMixin extends Entity implements Ownable {
+public abstract class ItemEntityMixin extends Entity {
     public ItemEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -75,6 +75,19 @@ public abstract class ItemEntityMixin extends Entity implements Ownable {
         ItemStack itemStack = stack1.copyWithCount(stack1.getCount() + i);
         stack2.decrement(i);
         return itemStack;
+    }
+
+    @Unique
+    double distanceItemEntities = BsDFWMI.CONFIG.common.getDistanceItemEntities();
+
+    @ModifyArg(method = "tryMerge()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;"), index = 0)
+    private double bsDFWMI$tryMergeX(double x) {
+        return distanceItemEntities;
+    }
+
+    @ModifyArg(method = "tryMerge()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;"), index = 2)
+    private double bsDFWMI$tryMergeZ(double z) {
+        return distanceItemEntities;
     }
 
     @Unique

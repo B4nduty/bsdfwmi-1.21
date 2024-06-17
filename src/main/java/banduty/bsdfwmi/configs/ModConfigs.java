@@ -24,5 +24,14 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public int getMaxGroundStack() {
             return Math.max(0, maxGroundStack);
         }
+
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        @Comment("Distance to Detect Other Item Entities | Default: 3.0 blocks" +
+                "Min Distance: 0.5 blocks / Max Distance: 10 blocks")
+        double distanceItemEntities = 3.0;
+
+        public double getDistanceItemEntities() {
+            return Math.min(10, Math.max(0.5, distanceItemEntities));
+        }
     }
 }

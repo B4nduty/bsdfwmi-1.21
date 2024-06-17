@@ -1,3 +1,6 @@
 {
-  "text.autoconfig.bsdfwmi.option.common.maxGroundStack": "Max Ground Stack"
+  "text.autoconfig.bsdfwmi.option.common.maxGroundStack": "Max Ground Stack",
+  "text.autoconfig.bsdfwmi.option.common.distanceItemEntities": "Distance to Detect Other Item Entities",
+  "text.autoconfig.bsdfwmi.option.common.distanceItemEntities.@tooltip[0]": "Min: 0.5 blocks",
+  "text.autoconfig.bsdfwmi.option.common.distanceItemEntities.@tooltip[1]": "Max: 10 blocks"
 }
