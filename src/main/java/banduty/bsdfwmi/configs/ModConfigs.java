@@ -17,12 +17,13 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
     @Config(name = BsDFWMI.MOD_ID + "-common")
     public static final class Common implements ConfigData {
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Max Ground Stack | Default: 512")
+        @ConfigEntry.Gui.Tooltip()
+        @Comment("Max Ground Stack | Default: 512" +
+                "Max Items Limit: 1024 items")
         int maxGroundStack = 512;
 
         public int getMaxGroundStack() {
-            return Math.max(0, maxGroundStack);
+            return Math.min(1024, Math.max(0, maxGroundStack));
         }
 
         @ConfigEntry.Gui.Tooltip(count = 2)
