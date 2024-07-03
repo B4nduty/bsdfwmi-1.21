@@ -100,9 +100,9 @@ public abstract class ItemEntityMixin extends Entity {
         MinecraftServer server = this.getWorld().getServer();
 
         if (server != null) {
-            int tps = (int) (server.getAverageTickTime() / 1000);
+            double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
             if (tps != 0) {
-                final int CUSTOM_TICK_RATE = (int) ((20 / Math.pow(tps, 2)) * 400);
+                final int CUSTOM_TICK_RATE = (int) ((20 / Math.pow(tps, 3)) * 400);
 
                 customTickCounter++;
                 if (customTickCounter < CUSTOM_TICK_RATE) {

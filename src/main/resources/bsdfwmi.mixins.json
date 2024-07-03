@@ -3,7 +3,8 @@
   "package": "banduty.bsdfwmi.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ItemEntityMixin"
+    "ItemEntityMixin",
+    "WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
