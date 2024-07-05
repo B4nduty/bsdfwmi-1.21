@@ -26,9 +26,10 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.min(1024, Math.max(0, maxGroundStack));
         }
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 3)
         @Comment("Distance to Detect Other Item Entities | Default: 3.0 blocks" +
-                "Min Distance: 0.5 blocks / Max Distance: 10 blocks")
+                "Min Distance: 0.5 blocks / Max Distance: 10 blocks" +
+                "If ServerCore is Installed this will be disabled, so you need to change from ServerCore configs")
         double distanceItemEntities = 3.0;
 
         public double getDistanceItemEntities() {
