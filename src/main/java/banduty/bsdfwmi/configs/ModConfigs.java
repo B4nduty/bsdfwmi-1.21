@@ -35,5 +35,21 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public double getDistanceItemEntities() {
             return Math.min(10, Math.max(0.5, distanceItemEntities));
         }
+
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Max Spawn Mobs from Spawners | Default: 6 Mobs")
+        int maxSpawnMobs = 6;
+
+        public int getMaxSpawnerMobs() {
+            return Math.max(0, maxSpawnMobs);
+        }
+
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Spawn Range around a Spawner Block | Default: 4 Blocks")
+        int spawnRange = 4;
+
+        public int getSpawnRange() {
+            return Math.max(0, spawnRange);
+        }
     }
 }
