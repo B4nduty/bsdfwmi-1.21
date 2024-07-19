@@ -14,8 +14,8 @@ public class MobSpawnerLogicMixin {
     @Shadow private int spawnRange;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void onConstruct(CallbackInfo ci) {
+    private void bsDFWMI$onConstruct(CallbackInfo ci) {
         maxNearbyEntities = BsDFWMI.CONFIG.common.getMaxSpawnerMobs();
-        spawnRange = BsDFWMI.CONFIG.common.getSpawnRange();
+        spawnRange = BsDFWMI.CONFIG.common.getSpawnerRange();
     }
 }

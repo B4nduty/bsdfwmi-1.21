@@ -1,5 +1,6 @@
 package banduty.bsdfwmi.mixin;
 
+import banduty.bsdfwmi.BsDFWMI;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
@@ -17,45 +18,49 @@ public abstract class WorldMixin {
     private int entitiesTickCounter = 0;
 
     @Inject(method = "tickBlockEntities", at = @At("HEAD"), cancellable = true)
-    private void onTickBlockEntities(CallbackInfo ci) {
-        World world = (World)(Object)this;
-        if (!(world instanceof ServerWorld serverWorld)) {
-            return;
-        }
+    private void bsDFWMI$onTickBlockEntities(CallbackInfo ci) {
+        if (BsDFWMI.CONFIG.common.getTickRateBlockEntities) {
+            World world = (World)(Object)this;
+            if (!(world instanceof ServerWorld serverWorld)) {
+                return;
+            }
 
-        blockEntitiesTickCounter++;
+            blockEntitiesTickCounter++;
 
-        MinecraftServer server = serverWorld.getServer();
-        if (server != null) {
-            double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-            final int CUSTOM_TICK_RATE = (int) ((20 / Math.pow(tps, 3)) * 400);
+            MinecraftServer server = serverWorld.getServer();
+            if (server != null) {
+                double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
+                final int CUSTOM_TICK_RATE = (int) ((20 / Math.pow(tps, 3)) * 400);
 
-            if (blockEntitiesTickCounter < CUSTOM_TICK_RATE) {
-                ci.cancel();
-            } else {
-                blockEntitiesTickCounter = 0;
+                if (blockEntitiesTickCounter < CUSTOM_TICK_RATE) {
+                    ci.cancel();
+                } else {
+                    blockEntitiesTickCounter = 0;
+                }
             }
         }
     }
 
     @Inject(method = "tickEntity", at = @At("HEAD"), cancellable = true)
-    private void onTickEntity(CallbackInfo ci) {
-        World world = (World)(Object)this;
-        if (!(world instanceof ServerWorld serverWorld)) {
-            return;
-        }
+    private void bsDFWMI$onTickEntity(CallbackInfo ci) {
+        if (BsDFWMI.CONFIG.common.getTickRateEntities) {
+            World world = (World)(Object)this;
+            if (!(world instanceof ServerWorld serverWorld)) {
+                return;
+            }
 
-        entitiesTickCounter++;
+            entitiesTickCounter++;
 
-        MinecraftServer server = serverWorld.getServer();
-        if (server != null) {
-            double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-            final int CUSTOM_TICK_RATE = (int) ((20 / Math.pow(tps, 3)) * 400);
+            MinecraftServer server = serverWorld.getServer();
+            if (server != null) {
+                double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
+                final int CUSTOM_TICK_RATE = (int) ((20 / Math.pow(tps, 3)) * 400);
 
-            if (entitiesTickCounter < CUSTOM_TICK_RATE) {
-                ci.cancel();
-            } else {
-                entitiesTickCounter = 0;
+                if (entitiesTickCounter < CUSTOM_TICK_RATE) {
+                    ci.cancel();
+                } else {
+                    entitiesTickCounter = 0;
+                }
             }
         }
     }

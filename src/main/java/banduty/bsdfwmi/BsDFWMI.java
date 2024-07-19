@@ -12,6 +12,9 @@ public class BsDFWMI implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+	}
+
+	public static void initialize() {
 		AutoConfig.register(ModConfigs.class, PartitioningSerializer.wrap(JanksonConfigSerializer::new));
 		CONFIG = AutoConfig.getConfigHolder(ModConfigs.class).getConfig();
 	}

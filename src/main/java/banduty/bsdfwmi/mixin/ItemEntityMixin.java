@@ -134,23 +134,26 @@ public abstract class ItemEntityMixin extends Entity {
     private int customTickCounter = 0;
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private void onTick(CallbackInfo ci) {
-        customTickCounter++;
+    private void bsDFWMI$onTick(CallbackInfo ci) {
+        if (BsDFWMI.CONFIG.common.getTickRateItemEntities) {
+            customTickCounter++;
 
-        MinecraftServer server = this.getWorld().getServer();
+            MinecraftServer server = this.getWorld().getServer();
 
-        if (server != null) {
-            double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-            if (tps != 0) {
-                final int CUSTOM_TICK_RATE = (int) ((20 / Math.pow(tps, 3)) * 400);
+            if (server != null) {
+                double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
+                if (tps != 0) {
+                    final int CUSTOM_TICK_RATE = (int) ((20 / Math.pow(tps, 3)) * 400);
 
-                customTickCounter++;
-                if (customTickCounter < CUSTOM_TICK_RATE) {
-                    ci.cancel();
-                } else {
-                    customTickCounter = 0;
+                    customTickCounter++;
+                    if (customTickCounter < CUSTOM_TICK_RATE) {
+                        ci.cancel();
+                    } else {
+                        customTickCounter = 0;
+                    }
                 }
             }
+
         }
     }
 }

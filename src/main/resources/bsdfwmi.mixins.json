@@ -5,6 +5,8 @@
   "mixins": [
     "ItemEntityMixin",
     "MobSpawnerLogicMixin",
+    "NetherPortalBlockMixin",
+    "SpawnGroupMixin",
     "WorldMixin"
   ],
   "injectors": {
@@ -12,5 +14,6 @@
   },
   "client": [
     "ItemRendererMixin"
-  ]
+  ],
+  "plugin": "banduty.bsdfwmi.mixin.MixinPlugin"
 }
