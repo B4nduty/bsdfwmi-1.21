@@ -24,7 +24,7 @@ public class NetherPortalBlockMixin {
 
             MinecraftServer server = world.getServer();
             double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-            final int CUSTOM_TICK_RATE = (int) (20 - tps);
+            final int CUSTOM_TICK_RATE = (int) (21 - tps);
 
             if (portalTickCounter < CUSTOM_TICK_RATE) {
                 ci.cancel();
