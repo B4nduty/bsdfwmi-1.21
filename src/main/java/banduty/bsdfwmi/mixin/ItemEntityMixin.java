@@ -101,14 +101,8 @@ public abstract class ItemEntityMixin extends Entity {
 
     @Shadow @Nullable private UUID owner;
 
-    /**
-     * @author
-     * Banduty
-     * @reason
-     * Get the Max Stack Size in inventory on Pick Up
-     */
-    @Overwrite
-    public void onPlayerCollision(PlayerEntity player) {
+    @Inject(method = "onPlayerCollision", at = @At("HEAD"), cancellable = true)
+    public void onPlayerCollision(PlayerEntity player, CallbackInfo ci) {
         if (!this.getWorld().isClient) {
             ItemStack itemStack = this.getStack();
             Item item = itemStack.getItem();
@@ -127,6 +121,8 @@ public abstract class ItemEntityMixin extends Entity {
                 player.increaseStat(Stats.PICKED_UP.getOrCreateStat(item), giveCount);
                 player.triggerItemPickedUpByEntityCriteria((ItemEntity)(Object)this);
             }
+
+            ci.cancel();
         }
     }
 
