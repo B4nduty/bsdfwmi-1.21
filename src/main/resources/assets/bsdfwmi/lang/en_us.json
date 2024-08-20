@@ -1,5 +1,6 @@
 {
   "text.autoconfig.bsdfwmi.title": "Banduty's DFWMI",
+  "text.autoconfig.bsdfwmi.option.common.getStrongerPerformance": "Stronger Optimization mode",
   "text.autoconfig.bsdfwmi.option.common.getTickRateEntities": "TR based on TPS for Entities",
   "text.autoconfig.bsdfwmi.option.common.getTickRateItemEntities": "TR based on TPS for Item Entities",
   "text.autoconfig.bsdfwmi.option.common.getTickRateBlockEntities": "TR based on TPS for Block Entities",

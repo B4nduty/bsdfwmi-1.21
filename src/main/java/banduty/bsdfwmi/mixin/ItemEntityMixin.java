@@ -138,15 +138,14 @@ public abstract class ItemEntityMixin extends Entity {
 
             if (server != null) {
                 double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-                if (tps != 0) {
-                    final int CUSTOM_TICK_RATE = (int) (21 - tps);
+                if (BsDFWMI.CONFIG.common.getStrongerPerformance) tps = Math.min(1000.0 / (Math.pow(server.getAverageTickTime(), 2) * 0.125), 20.0);
+                final int CUSTOM_TICK_RATE = (int) (21 - tps);
 
-                    customTickCounter++;
-                    if (customTickCounter < CUSTOM_TICK_RATE) {
-                        ci.cancel();
-                    } else {
-                        customTickCounter = 0;
-                    }
+                customTickCounter++;
+                if (customTickCounter < CUSTOM_TICK_RATE) {
+                    ci.cancel();
+                } else {
+                    customTickCounter = 0;
                 }
             }
 

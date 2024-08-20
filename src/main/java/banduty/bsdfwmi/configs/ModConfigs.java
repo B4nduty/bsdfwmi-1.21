@@ -18,6 +18,10 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
     @Config(name = BsDFWMI.MOD_ID + "-common")
     public static final class Common implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Enable Stronger Optimization mode | Default: false")
+        public boolean getStrongerPerformance = false;
+
+        @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Change Tick Rate based on TPS for Entities | Default: true")
         public boolean getTickRateEntities = true;
 
