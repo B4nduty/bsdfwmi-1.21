@@ -29,8 +29,8 @@ public abstract class WorldMixin {
 
             MinecraftServer server = serverWorld.getServer();
             if (server != null) {
-                double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-                if (BsDFWMI.CONFIG.common.getStrongerPerformance) tps = Math.min(1000.0 / (Math.pow(server.getAverageTickTime(), 2) * 0.125), 20.0);
+                double tps = 3.0d - (Math.min(1000.0 / server.getAverageTickTime(), 20.0) / 10);
+                if (BsDFWMI.CONFIG.common.getStrongerPerformance) tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
                 final int CUSTOM_TICK_RATE = (int) (21 - tps);
 
                 if (blockEntitiesTickCounter < CUSTOM_TICK_RATE) {
@@ -54,8 +54,8 @@ public abstract class WorldMixin {
 
             MinecraftServer server = serverWorld.getServer();
             if (server != null) {
-                double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-                if (BsDFWMI.CONFIG.common.getStrongerPerformance) tps = Math.min(1000.0 / (Math.pow(server.getAverageTickTime(), 2) * 0.125), 20.0);
+                double tps = 3.0d - (Math.min(1000.0 / server.getAverageTickTime(), 20.0) / 10);
+                if (BsDFWMI.CONFIG.common.getStrongerPerformance) tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
                 final int CUSTOM_TICK_RATE = (int) (21 - tps);
 
                 if (entitiesTickCounter < CUSTOM_TICK_RATE) {
