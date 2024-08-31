@@ -16,8 +16,6 @@
   "text.autoconfig.bsdfwmi.option.common.getTickRateNetherPortalBlock": "TR based on TPS for Nether Portal Blocks",
   "text.autoconfig.bsdfwmi.option.common.specificTickRateNetherPortalBlocks": "Specific Tick Rate for Nether Portal Blocks",
   "text.autoconfig.bsdfwmi.option.common.specificTickRateNetherPortalBlocks.@Tooltip": "If set to 0, it will do the Tick Rate based on TPS",
-  "text.autoconfig.bsdfwmi.option.common.maxGroundStack": "Max Ground Stack",
-  "text.autoconfig.bsdfwmi.option.common.maxGroundStack.@Tooltip": "Max Items Limit: 1024 items",
   "text.autoconfig.bsdfwmi.option.common.distanceItemEntities": "Distance to Detect Other Item Entities",
   "text.autoconfig.bsdfwmi.option.common.distanceItemEntities.@Tooltip[0]": "Min: 0.5 blocks",
   "text.autoconfig.bsdfwmi.option.common.distanceItemEntities.@Tooltip[1]": "Max: 10 blocks",

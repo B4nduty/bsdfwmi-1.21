@@ -81,15 +81,6 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, specificTickRateNetherPortalBlocks);
         }
 
-        @ConfigEntry.Gui.Tooltip()
-        @Comment("Max Ground Stack | Default: 512" +
-                "Max Items Limit: 1024 items")
-        int maxGroundStack = 512;
-
-        public int getMaxGroundStack() {
-            return Math.min(1024, Math.max(0, maxGroundStack));
-        }
-
         @ConfigEntry.Gui.Tooltip(count = 3)
         @Comment("Distance to Detect Other Item Entities | Default: 3.0 blocks" +
                 "Min Distance: 0.5 blocks / Max Distance: 10 blocks" +
