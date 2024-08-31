@@ -17,25 +17,69 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
     @Config(name = BsDFWMI.MOD_ID + "-common")
     public static final class Common implements ConfigData {
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Enable Stronger Optimization mode | Default: false")
-        public boolean getStrongerPerformance = false;
+        @ConfigEntry.Gui.Tooltip(count = 3)
+        @Comment("Change mode " +
+                "0 = Weak Mode" +
+                "1 = Intermediate Mode" +
+                "2 = Strong Mode" +
+                "| Default: 0")
+        int strongerPerformance = 0;
+
+        public int getStrongerPerformance() {
+            return Math.max(0, Math.min(strongerPerformance, 2));
+        }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Change Tick Rate based on TPS for Entities | Default: true")
-        public boolean getTickRateEntities = true;
+        public boolean getTickRateMobEntities = true;
+
+        @ConfigEntry.Gui.Tooltip()
+        @Comment("Specific Tick Rate for Mob Entities" +
+                "If set to 0, it will do the Tick Rate based on TPS")
+        int specificTickRateMobEntities = 0;
+
+        public int getSpecificTickRateMobEntities() {
+            return Math.max(0, specificTickRateMobEntities);
+        }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Change Tick Rate based on TPS for Item Entities | Default: true")
         public boolean getTickRateItemEntities = true;
 
+        @ConfigEntry.Gui.Tooltip()
+        @Comment("Specific Tick Rate for Item Entities" +
+                "If set to 0, it will do the Tick Rate based on TPS")
+        int specificTickRateItemEntities = 0;
+
+        public int getSpecificTickRateItemEntities() {
+            return Math.max(0, specificTickRateItemEntities);
+        }
+
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Change Tick Rate based on TPS for Block Entities | Default: true")
         public boolean getTickRateBlockEntities = true;
 
+        @ConfigEntry.Gui.Tooltip()
+        @Comment("Specific Tick Rate for Block Entities" +
+                "If set to 0, it will do the Tick Rate based on TPS")
+        int specificTickRateBlockEntities = 0;
+
+        public int getSpecificTickRateBlockEntities() {
+            return Math.max(0, specificTickRateBlockEntities);
+        }
+
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Change Tick Rate based on TPS for Nether Portal Blocks | Default: true")
         public boolean getTickRateNetherPortalBlock = true;
+
+        @ConfigEntry.Gui.Tooltip()
+        @Comment("Specific Tick Rate for Nether Portal Blocks" +
+                "If set to 0, it will do the Tick Rate based on TPS")
+        int specificTickRateNetherPortalBlocks = 0;
+
+        public int getSpecificTickRateNetherPortalBlocks() {
+            return Math.max(0, specificTickRateNetherPortalBlocks);
+        }
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Max Ground Stack | Default: 512" +

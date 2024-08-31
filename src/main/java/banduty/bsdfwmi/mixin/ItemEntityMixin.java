@@ -127,28 +127,36 @@ public abstract class ItemEntityMixin extends Entity {
     }
 
     @Unique
-    private int customTickCounter = 0;
+    private int entityTickCounter = 0;
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void bsDFWMI$onTick(CallbackInfo ci) {
         if (BsDFWMI.CONFIG.common.getTickRateItemEntities) {
-            customTickCounter++;
+            entityTickCounter++;
 
             MinecraftServer server = this.getWorld().getServer();
 
             if (server != null) {
-                double tps = 3.0d - (Math.min(1000.0 / server.getAverageTickTime(), 20.0) / 10);
-                if (BsDFWMI.CONFIG.common.getStrongerPerformance) tps = 21 - Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-                final int CUSTOM_TICK_RATE = (int) (tps);
+                final int CUSTOM_TICK_RATE = getCustomTickRate(server);
 
-                customTickCounter++;
-                if (customTickCounter < CUSTOM_TICK_RATE) {
+                entityTickCounter++;
+                if (entityTickCounter < CUSTOM_TICK_RATE) {
                     ci.cancel();
                 } else {
-                    customTickCounter = 0;
+                    entityTickCounter = 0;
                 }
             }
 
         }
+    }
+
+    @Unique
+    private static int getCustomTickRate(MinecraftServer server) {
+        double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
+        double custom_tps = 3.0d - (tps / 10);
+        if (BsDFWMI.CONFIG.common.getStrongerPerformance() == 1) custom_tps = 5 - (tps / 5);
+        if (BsDFWMI.CONFIG.common.getStrongerPerformance() == 2) custom_tps = 21 - tps;
+        int specificItemEntityTickRate = BsDFWMI.CONFIG.common.getSpecificTickRateItemEntities();
+        return (int) (specificItemEntityTickRate > 0 ? (21 - tps) * specificItemEntityTickRate : custom_tps);
     }
 }
