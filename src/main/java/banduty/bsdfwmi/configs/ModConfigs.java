@@ -13,38 +13,48 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
     @ConfigEntry.Category("common")
     @ConfigEntry.Gui.TransitiveObject()
-    public Common common = new Common();
+    public Configs configs = new Configs();
 
-    @Config(name = BsDFWMI.MOD_ID + "-common")
-    public static final class Common implements ConfigData {
+    @Config(name = BsDFWMI.MOD_ID)
+    public static final class Configs implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 3)
         @Comment("Change mode " +
                 "0 = Weak Mode" +
                 "1 = Intermediate Mode" +
                 "2 = Strong Mode" +
                 "| Default: 0")
-        int strongerPerformance = 0;
+        int performanceMode = 0;
 
-        public int getStrongerPerformance() {
-            return Math.max(0, Math.min(strongerPerformance, 2));
+        public int getPerformanceMode() {
+            return Math.max(0, Math.min(performanceMode, 2));
         }
 
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Change Tick Rate based on TPS for Entities | Default: true")
-        public boolean getTickRateMobEntities = true;
+        @ConfigEntry.Gui.Tooltip()
+        @Comment("Change Tick Rate for Living Entities | Default: true" +
+                "Doesn’t affect Player Entities")
+        public boolean getChangeTickRateLivingEntities = true;
 
         @ConfigEntry.Gui.Tooltip()
-        @Comment("Specific Tick Rate for Mob Entities" +
-                "If set to 0, it will do the Tick Rate based on TPS")
-        int specificTickRateMobEntities = 0;
+        @Comment("Change Tick Rate for Player's Vehicle Entities | Default: false" +
+                "Only when player is mounted")
+        public boolean getChangeTickRateVehicleEntities = false;
 
-        public int getSpecificTickRateMobEntities() {
-            return Math.max(0, specificTickRateMobEntities);
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Change Tick Rate for Hostile Entities | Default: true")
+        public boolean getChangeTickRateHostileEntities = true;
+
+        @ConfigEntry.Gui.Tooltip()
+        @Comment("Specific Tick Rate for Living Entities" +
+                "If set to 0, it will do the Tick Rate based on TPS")
+        int specificTickRateLivingEntities = 0;
+
+        public int getSpecificTickRateLivingEntities() {
+            return Math.max(0, specificTickRateLivingEntities);
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Change Tick Rate based on TPS for Item Entities | Default: true")
-        public boolean getTickRateItemEntities = true;
+        public boolean getChangeTickRateItemEntities = true;
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Specific Tick Rate for Item Entities" +
@@ -56,8 +66,8 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Change Tick Rate based on TPS for Block Entities | Default: true")
-        public boolean getTickRateBlockEntities = true;
+        @Comment("Change Tick Rate based on TPS for Block Entities | Default: false")
+        public boolean getChangeTickRateBlockEntities = false;
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Specific Tick Rate for Block Entities" +
@@ -70,7 +80,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Change Tick Rate based on TPS for Nether Portal Blocks | Default: true")
-        public boolean getTickRateNetherPortalBlock = true;
+        public boolean getChangeTickRateNetherPortalBlock = true;
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Specific Tick Rate for Nether Portal Blocks" +
@@ -84,7 +94,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         @ConfigEntry.Gui.Tooltip(count = 3)
         @Comment("Distance to Detect Other Item Entities | Default: 3.0 blocks" +
                 "Min Distance: 0.5 blocks / Max Distance: 10 blocks" +
-                "If ServerCore is Installed this will be disabled, so you need to change from ServerCore configs")
+                "If there is ServerCore, this is disabled, change it in ServerCore configs")
         double distanceItemEntities = 3.0;
 
         public double getDistanceItemEntities() {
@@ -107,7 +117,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, spawnerRange);
         }
 
-        @ConfigEntry.Gui.Tooltip()
+        @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Monster SpawnGroup Max Capacity | Default: 70" +
                 "After Changes you need to Restart the Server")
         int monsterSpawnGroupCapacity = 70;
@@ -116,7 +126,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, monsterSpawnGroupCapacity);
         }
 
-        @ConfigEntry.Gui.Tooltip()
+        @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Creature SpawnGroup Max Capacity | Default: 10" +
                 "After Changes you need to Restart the Server")
         int creatureSpawnGroupCapacity = 10;
@@ -125,7 +135,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, creatureSpawnGroupCapacity);
         }
 
-        @ConfigEntry.Gui.Tooltip()
+        @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Ambient SpawnGroup Max Capacity | Default: 15" +
                 "After Changes you need to Restart the Server")
         int ambientSpawnGroupCapacity = 15;
@@ -134,7 +144,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, ambientSpawnGroupCapacity);
         }
 
-        @ConfigEntry.Gui.Tooltip()
+        @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Axolotls / Underground Water Creature / Water Creature SpawnGroup Max Capacity | Default: 5" +
                 "After Changes you need to Restart the Server")
         int value5SpawnGroupCapacity = 5;
@@ -143,7 +153,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, value5SpawnGroupCapacity);
         }
 
-        @ConfigEntry.Gui.Tooltip()
+        @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Water Ambient SpawnGroup Max Capacity | Default: 20" +
                 "After Changes you need to Restart the Server")
         int waterAmbientSpawnGroupCapacity = 20;

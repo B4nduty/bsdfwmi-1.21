@@ -1,15 +1,14 @@
 package banduty.bsdfwmi.mixin;
 
 import banduty.bsdfwmi.BsDFWMI;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.*;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Consumer;
@@ -27,12 +26,12 @@ public abstract class WorldMixin {
         if (!(world instanceof ServerWorld serverWorld)) {
             return;
         }
-        if (BsDFWMI.CONFIG.common.getTickRateBlockEntities) {
+        if (BsDFWMI.CONFIG.configs.getChangeTickRateBlockEntities) {
             blockEntitiesTickCounter++;
 
             MinecraftServer server = serverWorld.getServer();
             if (server != null) {
-                final int CUSTOM_TICK_RATE = getCustomTickRateBlockEntities(server);
+                final int CUSTOM_TICK_RATE = BsDFWMI.getCustomTickRate(server, BsDFWMI.CONFIG.configs.getSpecificTickRateBlockEntities());
 
                 blockEntitiesTickCounter++;
                 if (blockEntitiesTickCounter < CUSTOM_TICK_RATE) {
@@ -53,12 +52,38 @@ public abstract class WorldMixin {
         if (entity instanceof PlayerEntity) {
             return;
         }
-        if (BsDFWMI.CONFIG.common.getTickRateMobEntities) {
+
+        if (entity instanceof ItemEntity) {
+            if (BsDFWMI.CONFIG.configs.getChangeTickRateItemEntities) {
+                entitiesTickCounter++;
+
+                MinecraftServer server = serverWorld.getServer();
+
+                if (server != null) {
+                    final int CUSTOM_TICK_RATE = BsDFWMI.getCustomTickRate(server, BsDFWMI.CONFIG.configs.getSpecificTickRateItemEntities());
+
+                    entitiesTickCounter++;
+                    if (entitiesTickCounter < CUSTOM_TICK_RATE) {
+                        ci.cancel();
+                    } else {
+                        entitiesTickCounter = 0;
+                    }
+                }
+
+            }
+        } else if (BsDFWMI.CONFIG.configs.getChangeTickRateLivingEntities) {
+            if (entity.hasPassengers() && !BsDFWMI.CONFIG.configs.getChangeTickRateVehicleEntities) {
+                return;
+            }
+            if (entity instanceof HostileEntity && !BsDFWMI.CONFIG.configs.getChangeTickRateHostileEntities) {
+                return;
+            }
+
             entitiesTickCounter++;
 
             MinecraftServer server = serverWorld.getServer();
             if (server != null) {
-                final int CUSTOM_TICK_RATE = getCustomTickRateMobEntities(server);
+                final int CUSTOM_TICK_RATE = BsDFWMI.getCustomTickRate(server, BsDFWMI.CONFIG.configs.getSpecificTickRateLivingEntities());
 
                 entitiesTickCounter++;
                 if (entitiesTickCounter < CUSTOM_TICK_RATE) {
@@ -68,25 +93,5 @@ public abstract class WorldMixin {
                 }
             }
         }
-    }
-
-    @Unique
-    private static int getCustomTickRateBlockEntities(MinecraftServer server) {
-        double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-        double custom_tps = 3.0d - (tps / 10);
-        if (BsDFWMI.CONFIG.common.getStrongerPerformance() == 1) custom_tps = 5 - (tps / 5);
-        if (BsDFWMI.CONFIG.common.getStrongerPerformance() == 2) custom_tps = 21 - tps;
-        int specificBlockEntityTickRate = BsDFWMI.CONFIG.common.getSpecificTickRateBlockEntities();
-        return (int) (specificBlockEntityTickRate > 0 ? (21 - tps) * specificBlockEntityTickRate : custom_tps);
-    }
-
-    @Unique
-    private static int getCustomTickRateMobEntities(MinecraftServer server) {
-        double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-        double custom_tps = 3.0d - (tps / 10);
-        if (BsDFWMI.CONFIG.common.getStrongerPerformance() == 1) custom_tps = 5 - (tps / 5);
-        if (BsDFWMI.CONFIG.common.getStrongerPerformance() == 2) custom_tps = 21 - tps;
-        int specificBlockEntityTickRate = BsDFWMI.CONFIG.common.getSpecificTickRateMobEntities();
-        return (int) (specificBlockEntityTickRate > 0 ? (21 - tps) * specificBlockEntityTickRate : custom_tps);
     }
 }
