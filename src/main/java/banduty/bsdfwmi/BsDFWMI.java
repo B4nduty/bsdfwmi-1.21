@@ -5,7 +5,9 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
 
 public class BsDFWMI implements ModInitializer {
 	public static final String MOD_ID = "bsdfwmi";
@@ -26,5 +28,17 @@ public class BsDFWMI implements ModInitializer {
 		if (BsDFWMI.CONFIG.configs.getPerformanceMode() == 1) custom_tps = 5 - (tps / 5);
 		if (BsDFWMI.CONFIG.configs.getPerformanceMode() == 2) custom_tps = 21 - tps;
 		return (int) (specificTickRate > 0 ? specificTickRate : custom_tps);
+	}
+
+	public static boolean shouldSkipTicking(World world) {
+		RegistryKey<World> dimension = world.getRegistryKey();
+
+		if (dimension == World.OVERWORLD && BsDFWMI.CONFIG.configs.tickOverworld) {
+			return true;
+		}
+		if (dimension == World.NETHER && BsDFWMI.CONFIG.configs.tickNether) {
+			return true;
+		}
+		return dimension == World.END && BsDFWMI.CONFIG.configs.tickEnd;
 	}
 }

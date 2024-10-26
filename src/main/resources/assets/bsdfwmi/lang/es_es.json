@@ -4,6 +4,9 @@
   "text.autoconfig.bsdfwmi.option.configs.performanceMode.@Tooltip[0]": "0 = Modo Débil",
   "text.autoconfig.bsdfwmi.option.configs.performanceMode.@Tooltip[1]": "1 = Modo Intermedio",
   "text.autoconfig.bsdfwmi.option.configs.performanceMode.@Tooltip[2]": "2 = Modo Fuerte",
+  "text.autoconfig.bsdfwmi.option.configs.tickOverworld": "Cambiar Tick Rate para el Overworld",
+  "text.autoconfig.bsdfwmi.option.configs.tickNether": "Cambiar Tick Rate para el Nether",
+  "text.autoconfig.bsdfwmi.option.configs.tickEnd": "Cambiar Tick Rate para el End",
   "text.autoconfig.bsdfwmi.option.configs.getChangeTickRateLivingEntities": "Cambiar Tick Rate para Entidades Vivas",
   "text.autoconfig.bsdfwmi.option.configs.getChangeTickRateLivingEntities.@Tooltip": "No afecta a los Jugadores",
   "text.autoconfig.bsdfwmi.option.configs.getChangeTickRateVehicleEntities": "Cambiar Tick Rate para Vehículos",
@@ -30,5 +33,7 @@
   "text.autoconfig.bsdfwmi.option.configs.creatureSpawnGroupCapacity": "Capacidad máxima de generación de criaturas",
   "text.autoconfig.bsdfwmi.option.configs.ambientSpawnGroupCapacity": "Capacidad máxima de generación ambiental",
   "text.autoconfig.bsdfwmi.option.configs.value5SpawnGroupCapacity": "Capacidad máxima de generación de criaturas con valor 5",
-  "text.autoconfig.bsdfwmi.option.configs.waterAmbientSpawnGroupCapacity": "Capacidad máxima de generación ambiental del agua"
+  "text.autoconfig.bsdfwmi.option.configs.waterAmbientSpawnGroupCapacity": "Capacidad máxima de generación ambiental del agua",
+  "text.autoconfig.bsdfwmi.option.configs.mobDespawnTime": "Ticks para que las Criaturas Desaparezcan",
+  "text.autoconfig.bsdfwmi.option.configs.mobDespawnChance": "Probabilidad para que las Criaturas Desaparezcan"
 }

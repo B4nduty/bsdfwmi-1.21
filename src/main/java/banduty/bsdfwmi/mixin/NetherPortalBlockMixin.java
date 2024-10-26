@@ -16,6 +16,7 @@ public class NetherPortalBlockMixin {
     private int portalTickCounter = 0;
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
     private void modifyTickRate(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
+        if (BsDFWMI.shouldSkipTicking(world)) return;
         if (BsDFWMI.CONFIG.configs.getChangeTickRateNetherPortalBlock) {
             portalTickCounter++;
 

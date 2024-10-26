@@ -29,6 +29,18 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, Math.min(performanceMode, 2));
         }
 
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Change Tick Rate for Overworld")
+        public boolean tickOverworld = true;
+
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Change Tick Rate for Nether")
+        public boolean tickNether = true;
+
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Change Tick Rate for End")
+        public boolean tickEnd = true;
+
         @ConfigEntry.Gui.Tooltip()
         @Comment("Change Tick Rate for Living Entities | Default: true" +
                 "Doesn’t affect Player Entities")
@@ -118,8 +130,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Monster SpawnGroup Max Capacity | Default: 70" +
-                "After Changes you need to Restart the Server")
+        @Comment("Monster SpawnGroup Max Capacity | Default: 70")
         int monsterSpawnGroupCapacity = 70;
 
         public int getMonsterSpawnGroupCapacity() {
@@ -127,8 +138,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Creature SpawnGroup Max Capacity | Default: 10" +
-                "After Changes you need to Restart the Server")
+        @Comment("Creature SpawnGroup Max Capacity | Default: 10")
         int creatureSpawnGroupCapacity = 10;
 
         public int getCreatureSpawnGroupCapacity() {
@@ -136,8 +146,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Ambient SpawnGroup Max Capacity | Default: 15" +
-                "After Changes you need to Restart the Server")
+        @Comment("Ambient SpawnGroup Max Capacity | Default: 15")
         int ambientSpawnGroupCapacity = 15;
 
         public int getAmbientSpawnGroupCapacity() {
@@ -145,8 +154,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Axolotls / Underground Water Creature / Water Creature SpawnGroup Max Capacity | Default: 5" +
-                "After Changes you need to Restart the Server")
+        @Comment("Axolotls / Underground Water Creature / Water Creature SpawnGroup Max Capacity | Default: 5")
         int value5SpawnGroupCapacity = 5;
 
         public int getValue5SpawnGroupCapacity() {
@@ -154,12 +162,27 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Water Ambient SpawnGroup Max Capacity | Default: 20" +
-                "After Changes you need to Restart the Server")
+        @Comment("Water Ambient SpawnGroup Max Capacity | Default: 20")
         int waterAmbientSpawnGroupCapacity = 20;
 
         public int getWaterAmbientSpawnGroupCapacity() {
             return Math.max(0, waterAmbientSpawnGroupCapacity);
+        }
+
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Tick Time required for Mob Entities to Despawn | Default: 600")
+        int mobDespawnTime = 20;
+
+        public int getMobDespawnTime() {
+            return Math.max(0, mobDespawnTime);
+        }
+
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Chance required for Mob Entities to Despawn | Default: 600")
+        int mobDespawnChance = 20;
+
+        public int getMobDespawnChance() {
+            return Math.max(0, mobDespawnChance);
         }
     }
 }

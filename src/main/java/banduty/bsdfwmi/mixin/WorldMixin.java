@@ -23,9 +23,13 @@ public abstract class WorldMixin {
     @Inject(method = "tickBlockEntities", at = @At("HEAD"), cancellable = true)
     private void bsDFWMI$onTickBlockEntities(CallbackInfo ci) {
         World world = (World)(Object)this;
+
         if (!(world instanceof ServerWorld serverWorld)) {
             return;
         }
+
+        if (BsDFWMI.shouldSkipTicking(world)) return;
+
         if (BsDFWMI.CONFIG.configs.getChangeTickRateBlockEntities) {
             blockEntitiesTickCounter++;
 
@@ -46,9 +50,13 @@ public abstract class WorldMixin {
     @Inject(method = "tickEntity", at = @At("HEAD"), cancellable = true)
     private <T extends Entity> void bsDFWMI$onTickEntity(Consumer<T> tickConsumer, T entity, CallbackInfo ci) {
         World world = (World)(Object)this;
+
         if (!(world instanceof ServerWorld serverWorld)) {
             return;
         }
+
+        if (BsDFWMI.shouldSkipTicking(world)) return;
+
         if (entity instanceof PlayerEntity) {
             return;
         }
