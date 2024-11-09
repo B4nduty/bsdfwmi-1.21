@@ -1,6 +1,6 @@
-package banduty.bsdfwmi.mixin;
+package banduty.ticktweaks.mixin;
 
-import banduty.bsdfwmi.BsDFWMI;
+import banduty.ticktweaks.TickTweaks;
 import net.minecraft.block.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
@@ -15,16 +15,15 @@ public class NetherPortalBlockMixin {
     @Unique
     private int portalTickCounter = 0;
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
-    private void modifyTickRate(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
-        if (BsDFWMI.shouldSkipTicking(world)) return;
-        if (BsDFWMI.CONFIG.configs.getChangeTickRateNetherPortalBlock) {
+    private void ticktweaks$modifyTickRate(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
+        if (TickTweaks.shouldSkipTicking(world)) return;
+        if (TickTweaks.CONFIG.configs.getChangeTickRateNetherPortalBlock) {
             portalTickCounter++;
 
             MinecraftServer server = world.getServer();
 
-            final int CUSTOM_TICK_RATE = BsDFWMI.getCustomTickRate(server, BsDFWMI.CONFIG.configs.getSpecificTickRateNetherPortalBlocks());
+            final int CUSTOM_TICK_RATE = TickTweaks.getCustomTickRate(server, TickTweaks.CONFIG.configs.getSpecificTickRateNetherPortalBlocks());
 
-            portalTickCounter++;
             if (portalTickCounter < CUSTOM_TICK_RATE) {
                 ci.cancel();
             } else {

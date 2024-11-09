@@ -1,6 +1,6 @@
-package banduty.bsdfwmi.compat;
+package banduty.ticktweaks.compat;
 
-import banduty.bsdfwmi.configs.ModConfigs;
+import banduty.ticktweaks.configs.ModConfigs;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;

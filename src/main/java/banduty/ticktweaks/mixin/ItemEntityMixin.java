@@ -1,6 +1,6 @@
-package banduty.bsdfwmi.mixin;
+package banduty.ticktweaks.mixin;
 
-import banduty.bsdfwmi.BsDFWMI;
+import banduty.ticktweaks.TickTweaks;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.*;
 import net.minecraft.world.World;
@@ -15,13 +15,13 @@ public abstract class ItemEntityMixin extends Entity {
     }
 
     @Unique
-    double distanceItemEntities = BsDFWMI.CONFIG.configs.getDistanceItemEntities();
+    double distanceItemEntities = TickTweaks.CONFIG.configs.getDistanceItemEntities();
 
     @ModifyArgs(
             method = "tryMerge()V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;")
     )
-    private void modifyMergeArgs(Args args) {
+    private void ticktweaks$modifyMergeArgs(Args args) {
         if (!FabricLoader.getInstance().isModLoaded("servercore")) {
             args.set(0, distanceItemEntities);
             args.set(2, distanceItemEntities);

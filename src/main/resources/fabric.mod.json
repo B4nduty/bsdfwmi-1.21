@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "bsdfwmi",
+	"id": "ticktweaks",
 	"version": "${version}",
-	"name": "BsDFWMI",
-	"description": "Optimization Mod for Item Entities",
+	"name": "Tick Tweaks",
+	"description": "Optimization Mod for Tick Rate",
 	"authors": [
 		"Banduty"
 	],
@@ -12,18 +12,18 @@
 		"issues": "https://discord.gg/vbZ2zTHGNA"
 	},
 	"license": "All Rights Reserved",
-	"icon": "assets/bsdfwmi/bsdfwmi.png",
+	"icon": "assets/ticktweaks/ticktweaks.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"banduty.bsdfwmi.BsDFWMI"
+          "banduty.ticktweaks.TickTweaks"
 		],
 		"modmenu": [
-			"banduty.bsdfwmi.compat.ModMenuIntegration"
+			"banduty.ticktweaks.compat.ModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"bsdfwmi.mixins.json"
+		"ticktweaks.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",

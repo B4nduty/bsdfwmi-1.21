@@ -1,13 +1,13 @@
-package banduty.bsdfwmi.configs;
+package banduty.ticktweaks.configs;
 
-import banduty.bsdfwmi.BsDFWMI;
+import banduty.ticktweaks.TickTweaks;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
-@Config(name = BsDFWMI.MOD_ID)
+@Config(name = TickTweaks.MOD_ID)
 @Config.Gui.Background("minecraft:textures/block/oak_planks.png")
 public class ModConfigs extends PartitioningSerializer.GlobalData {
 
@@ -15,18 +15,22 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
     @ConfigEntry.Gui.TransitiveObject()
     public Configs configs = new Configs();
 
-    @Config(name = BsDFWMI.MOD_ID)
+    @Config(name = TickTweaks.MOD_ID)
     public static final class Configs implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 3)
-        @Comment("Change mode " +
-                "0 = Weak Mode" +
-                "1 = Intermediate Mode" +
-                "2 = Strong Mode" +
-                "| Default: 0")
+        @Comment("Change mode  \n 0 = Weak Mode \n 1 = Intermediate Mode \n 2 = Strong Mode \n | Default: 0")
         int performanceMode = 0;
 
         public int getPerformanceMode() {
             return Math.max(0, Math.min(performanceMode, 2));
+        }
+
+        @ConfigEntry.Gui.Tooltip(count = 0)
+        @Comment("Emergency Stop TPS; Stops Block Entity to Tick")
+        int emergencyStopTps = 5;
+
+        public int getEmergencyStopTps() {
+            return Math.max(0, Math.min(emergencyStopTps, 20));
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
@@ -42,13 +46,11 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public boolean tickEnd = true;
 
         @ConfigEntry.Gui.Tooltip()
-        @Comment("Change Tick Rate for Living Entities | Default: true" +
-                "Doesn’t affect Player Entities")
+        @Comment("Change Tick Rate for Living Entities | Default: true \n Doesn’t affect Player Entities")
         public boolean getChangeTickRateLivingEntities = true;
 
         @ConfigEntry.Gui.Tooltip()
-        @Comment("Change Tick Rate for Player's Vehicle Entities | Default: false" +
-                "Only when player is mounted")
+        @Comment("Change Tick Rate for Player's Vehicle Entities | Default: false \n Only when player is mounted")
         public boolean getChangeTickRateVehicleEntities = false;
 
         @ConfigEntry.Gui.Tooltip(count = 0)
@@ -56,8 +58,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public boolean getChangeTickRateHostileEntities = true;
 
         @ConfigEntry.Gui.Tooltip()
-        @Comment("Specific Tick Rate for Living Entities" +
-                "If set to 0, it will do the Tick Rate based on TPS")
+        @Comment("Specific Tick Rate for Living Entities \n If set to 0, it will do the Tick Rate based on TPS")
         int specificTickRateLivingEntities = 0;
 
         public int getSpecificTickRateLivingEntities() {
@@ -69,8 +70,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public boolean getChangeTickRateItemEntities = true;
 
         @ConfigEntry.Gui.Tooltip()
-        @Comment("Specific Tick Rate for Item Entities" +
-                "If set to 0, it will do the Tick Rate based on TPS")
+        @Comment("Specific Tick Rate for Item Entities \n If set to 0, it will do the Tick Rate based on TPS")
         int specificTickRateItemEntities = 0;
 
         public int getSpecificTickRateItemEntities() {
@@ -82,8 +82,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public boolean getChangeTickRateBlockEntities = false;
 
         @ConfigEntry.Gui.Tooltip()
-        @Comment("Specific Tick Rate for Block Entities" +
-                "If set to 0, it will do the Tick Rate based on TPS")
+        @Comment("Specific Tick Rate for Block Entities \n If set to 0, it will do the Tick Rate based on TPS")
         int specificTickRateBlockEntities = 0;
 
         public int getSpecificTickRateBlockEntities() {
@@ -95,8 +94,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public boolean getChangeTickRateNetherPortalBlock = true;
 
         @ConfigEntry.Gui.Tooltip()
-        @Comment("Specific Tick Rate for Nether Portal Blocks" +
-                "If set to 0, it will do the Tick Rate based on TPS")
+        @Comment("Specific Tick Rate for Nether Portal Blocks \n If set to 0, it will do the Tick Rate based on TPS")
         int specificTickRateNetherPortalBlocks = 0;
 
         public int getSpecificTickRateNetherPortalBlocks() {
@@ -104,9 +102,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 3)
-        @Comment("Distance to Detect Other Item Entities | Default: 3.0 blocks" +
-                "Min Distance: 0.5 blocks / Max Distance: 10 blocks" +
-                "If there is ServerCore, this is disabled, change it in ServerCore configs")
+        @Comment("Distance to Detect Other Item Entities | Default: 3.0 blocks \n Min Distance: 0.5 blocks / Max Distance: 10 blocks \n If there is ServerCore, this is disabled, change it in ServerCore configs")
         double distanceItemEntities = 3.0;
 
         public double getDistanceItemEntities() {

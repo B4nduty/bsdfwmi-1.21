@@ -1,6 +1,6 @@
-package banduty.bsdfwmi.mixin;
+package banduty.ticktweaks.mixin;
 
-import banduty.bsdfwmi.BsDFWMI;
+import banduty.ticktweaks.TickTweaks;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class MixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
-        BsDFWMI.initialize();
+        TickTweaks.initialize();
     }
 
     @Override

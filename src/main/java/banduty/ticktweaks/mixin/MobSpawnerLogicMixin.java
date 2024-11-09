@@ -1,6 +1,6 @@
-package banduty.bsdfwmi.mixin;
+package banduty.ticktweaks.mixin;
 
-import banduty.bsdfwmi.BsDFWMI;
+import banduty.ticktweaks.TickTweaks;
 import net.minecraft.block.spawner.MobSpawnerLogic;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -12,8 +12,8 @@ public class MobSpawnerLogicMixin {
     @Shadow private int spawnRange;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void bsDFWMI$onConstruct(CallbackInfo ci) {
-        maxNearbyEntities = BsDFWMI.CONFIG.configs.getMaxSpawnerMobs();
-        spawnRange = BsDFWMI.CONFIG.configs.getSpawnerRange();
+    private void ticktweaks$onConstruct(CallbackInfo ci) {
+        maxNearbyEntities = TickTweaks.CONFIG.configs.getMaxSpawnerMobs();
+        spawnRange = TickTweaks.CONFIG.configs.getSpawnerRange();
     }
 }
