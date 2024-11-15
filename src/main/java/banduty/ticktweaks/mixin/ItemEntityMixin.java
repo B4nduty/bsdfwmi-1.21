@@ -2,10 +2,14 @@ package banduty.ticktweaks.mixin;
 
 import banduty.ticktweaks.TickTweaks;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(ItemEntity.class)
@@ -15,7 +19,7 @@ public abstract class ItemEntityMixin extends Entity {
     }
 
     @Unique
-    double distanceItemEntities = TickTweaks.CONFIG.configs.getDistanceItemEntities();
+    double distanceItemEntities = TickTweaks.CONFIG.misc.getDistanceItemEntities();
 
     @ModifyArgs(
             method = "tryMerge()V",
