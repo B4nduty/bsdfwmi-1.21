@@ -4,6 +4,7 @@ import banduty.streq.StrEq;
 import banduty.ticktweaks.TickTweaks;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -17,13 +18,13 @@ public class TickRateCalculator {
         Map<String, Double> variables = new HashMap<>();
         variables.put("tps", tps);
 
-        int customTickRate = (int) Math.round(Math.min(20, StrEq.evaluate(formula, variables, false)));
+        int customTickRate = (int) Math.round(Math.min(20, StrEq.evaluate(formula, variables)));
 
         return specificTickRate > 0 ? specificTickRate : customTickRate;
     }
 
-    public static boolean shouldSkipTicking(World world) {
-        RegistryKey<World> dimension = world.getRegistryKey();
+    public static boolean shouldSkipTicking(ServerWorld serverWorld) {
+        RegistryKey<World> dimension = serverWorld.getRegistryKey();
 
         if (dimension == World.OVERWORLD && !TickTweaks.CONFIG.enableCustomTick.tickOverworld) {
             return true;

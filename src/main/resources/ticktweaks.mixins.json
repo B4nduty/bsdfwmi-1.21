@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ItemEntityMixin",
+    "LivingEntityMixin",
     "MobEntityMixin",
     "MobSpawnerLogicMixin",
     "NetherPortalBlockMixin",

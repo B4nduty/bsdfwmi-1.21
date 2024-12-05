@@ -31,7 +31,7 @@
 		"java": ">=21",
 		"fabric-api": "*",
 		"cloth-config": ">=14.0.126-fabric",
-		"streq": ">=1.0.0"
+		"streq": ">=1.0.4"
 	},
 	"suggests": {
 		"another-mod": "*"

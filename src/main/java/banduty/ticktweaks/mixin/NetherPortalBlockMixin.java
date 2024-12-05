@@ -16,23 +16,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NetherPortalBlock.class)
 public class NetherPortalBlockMixin {
-    @Unique
-    private int portalTickCounter = 0;
+    @Unique private int portalTickCounter = 0;
+
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
-    private void ticktweaks$modifyTickRate(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
+    private void modifyNetherPortalTickRate(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (TickRateCalculator.shouldSkipTicking(world)) return;
-        if (TickTweaks.CONFIG.enableCustomTick.changeTickRateNetherPortalBlock) {
-            portalTickCounter++;
+        if (TickTweaks.CONFIG.enableCustomTick.changeTickRateNetherPortalBlock) return;
+        portalTickCounter++;
 
-            MinecraftServer server = world.getServer();
+        MinecraftServer server = world.getServer();
+        int customTickRate = TickRateCalculator.getCustomTickRate(server, TickTweaks.CONFIG.tickRateTime.getSpecificTickRateNetherPortalBlocks());
 
-            final int customTickRate = TickRateCalculator.getCustomTickRate(server, TickTweaks.CONFIG.tickRateTime.getSpecificTickRateNetherPortalBlocks());
-
-            if (portalTickCounter < customTickRate) {
-                ci.cancel();
-            } else {
-                portalTickCounter = 0;
-            }
+        if (portalTickCounter < customTickRate) {
+            ci.cancel();
+        } else {
+            portalTickCounter = 0;
         }
     }
 }

@@ -38,7 +38,7 @@ dependencies {
 
 	modApi "com.terraformersmc:modmenu:${project.modmenu}"
 
-	modImplementation "curse.maven:streq-1139970:5902189"
+	modImplementation "curse.maven:streq-1139970:${project.streq_version}"
 	
 }
 
