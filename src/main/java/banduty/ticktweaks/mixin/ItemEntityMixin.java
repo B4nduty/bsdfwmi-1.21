@@ -65,13 +65,12 @@ public abstract class ItemEntityMixin {
         World world = entity.getWorld();
         if (!(world instanceof ServerWorld serverWorld) || entity instanceof PlayerEntity) return;
 
-        setTickTime(getTickTime() + 1);
-
         MinecraftServer server = serverWorld.getServer();
 
-
         if (!TickTweaks.CONFIG.enableCustomTick.changeTickRateItemEntities || TickHandlerUtil.handleTickCancellation(server, ci, false,
-                TickTweaks.CONFIG.tickRateTime.getSpecificTickRateItemEntities(), getTickTime())) setTickTime(0);
+                TickTweaks.CONFIG.tickRateTime.getSpecificTickRateItemEntities(), getTickTime()))
+            setTickTime(0);
+        else setTickTime(getTickTime() + 1);
     }
 
     @Unique

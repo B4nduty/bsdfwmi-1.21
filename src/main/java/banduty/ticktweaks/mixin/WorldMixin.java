@@ -18,8 +18,9 @@ public abstract class WorldMixin {
     private void onTickBlockEntities(CallbackInfo ci) {
         World world = (World) (Object) this;
         if (!(world instanceof ServerWorld serverWorld)) return;
-        if (!TickHandlerUtil.validateAndCancelTick(serverWorld, ci, TickTweaks.CONFIG.tickRateTime.getSpecificTickRateBlockEntities(), blockEntitiesTickCounter++)) {
+        if (TickTweaks.CONFIG.enableCustomTick.changeTickRateBlockEntities) return;
+        if (TickHandlerUtil.validateAndCancelTick(serverWorld, ci, TickTweaks.CONFIG.tickRateTime.getSpecificTickRateBlockEntities(), blockEntitiesTickCounter)) {
             blockEntitiesTickCounter = 0;
-        }
+        } else blockEntitiesTickCounter++;
     }
 }

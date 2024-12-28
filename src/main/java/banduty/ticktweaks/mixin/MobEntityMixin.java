@@ -15,6 +15,6 @@ public class MobEntityMixin {
 
     @ModifyConstant(method = "checkDespawn", constant = @Constant(intValue = 800))
     private int ticktweaks$checkDespawnChance(int constant) {
-        return TickTweaks.CONFIG.misc.getMobDespawnChance();
+        return (int) (1 / TickTweaks.CONFIG.misc.getMobDespawnChance());
     }
 }

@@ -16,8 +16,7 @@ import java.util.List;
 public class TickHandlerUtil {
 
     public static boolean validateAndCancelTick(ServerWorld serverWorld, CallbackInfo ci, int specificTickRate, int tickCounter) {
-        if (TickRateCalculator.shouldSkipTicking(serverWorld)) return false;
-        if (TickTweaks.CONFIG.enableCustomTick.changeTickRateBlockEntities) return false;
+        if (TickRateCalculator.shouldSkipTicking(serverWorld)) return true;
 
         MinecraftServer server = serverWorld.getServer();
         int tickRate = TickRateCalculator.getCustomTickRate(server, specificTickRate);
@@ -25,9 +24,9 @@ public class TickHandlerUtil {
 
         if (tickCounter < tickRate || tps < TickTweaks.CONFIG.stopTick.getEmergencyStopTps()) {
             ci.cancel();
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public static boolean handleTickCancellation(MinecraftServer server, CallbackInfo ci, boolean isOutsideRadius, int specificTickRate, int tickCounter) {

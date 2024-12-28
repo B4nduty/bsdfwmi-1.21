@@ -42,7 +42,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Tick Rate for Living Entities. \nSet to 0 for a TPS-based Tick Rate.")
-        int specificTickRateLivingEntities = 0;
+        public int specificTickRateLivingEntities = 0;
 
         public int getSpecificTickRateLivingEntities() {
             return Math.max(0, specificTickRateLivingEntities);
@@ -50,7 +50,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Tick Rate for Item Entities. \nSet to 0 for a TPS-based Tick Rate.")
-        int specificTickRateItemEntities = 0;
+        public int specificTickRateItemEntities = 0;
 
         public int getSpecificTickRateItemEntities() {
             return Math.max(0, specificTickRateItemEntities);
@@ -58,7 +58,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Tick Rate for Block Entities. \nSet to 0 for a TPS-based Tick Rate.")
-        int specificTickRateBlockEntities = 0;
+        public int specificTickRateBlockEntities = 0;
 
         public int getSpecificTickRateBlockEntities() {
             return Math.max(0, specificTickRateBlockEntities);
@@ -66,7 +66,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Tick Rate for Nether Portal Blocks. \nSet to 0 for a TPS-based Tick Rate.")
-        int specificTickRateNetherPortalBlocks = 0;
+        public int specificTickRateNetherPortalBlocks = 0;
 
         public int getSpecificTickRateNetherPortalBlocks() {
             return Math.max(0, specificTickRateNetherPortalBlocks);
@@ -89,7 +89,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public boolean tickEnd = true;
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Living Entities exempt from distance-based stop. \nList Living Entities IDs separated by commas (e.g., \"minecraft:zombie\", \"minecraft:skeleton\") \n You can put also #minecraft:hostile, #minecraft:passive & #minecraft:neutral")
+        @Comment("Living Entities exempt from custom Tick Rate. \nList Living Entities IDs separated by commas (e.g., \"minecraft:zombie\", \"minecraft:skeleton\") \n You can put also #minecraft:hostile, #minecraft:passive & #minecraft:neutral")
         public List<String> blacklistedLivingEntities = List.of("#minecraft:hostile", "minecraft:ender_dragon");
 
         public List<String> getBlacklistedLivingEntities() {
@@ -114,7 +114,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Emergency stop TPS; halts block entity ticking.")
-        int emergencyStopTps = 2;
+        public int emergencyStopTps = 2;
 
         public int getEmergencyStopTps() {
             return Math.clamp(emergencyStopTps, 0, 20);
@@ -122,7 +122,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Distance within players which mobs stop ticking. \nSet to 0 to disable.")
-        int stopTickingDistance = 64;
+        public int stopTickingDistance = 64;
 
         public int getStopTickingDistance() {
             return Math.max(0, stopTickingDistance);
@@ -130,7 +130,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip()
         @Comment("Change Tick Rate when stopping from distance. \nSet to 0 to completely stop ticking.")
-        int tickingTimeOnStop = 0;
+        public int tickingTimeOnStop = 0;
 
         public int getTickingTimeOnStop() {
             return Math.max(0, tickingTimeOnStop);
@@ -150,7 +150,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 3)
         @Comment("Distance to detect nearby item entities. \nDefault: 3.0 blocks. \nMin: 0.5 blocks, Max: 10 blocks. \nIf ServerCore is used, this is disabled.")
-        double distanceItemEntities = 3.0;
+        public double distanceItemEntities = 3.0;
 
         public double getDistanceItemEntities() {
             return Math.clamp(distanceItemEntities, 0.5, 10);
@@ -158,7 +158,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Maximum number of mobs that can spawn from spawners. \nDefault: 6 mobs.")
-        int maxSpawnerMobs = 6;
+        public int maxSpawnerMobs = 6;
 
         public int getMaxSpawnerMobs() {
             return Math.max(0, maxSpawnerMobs);
@@ -166,7 +166,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Range around a spawner where mobs can spawn. \nDefault: 4 blocks.")
-        int spawnerRange = 4;
+        public int spawnerRange = 4;
 
         public int getSpawnerRange() {
             return Math.max(0, spawnerRange);
@@ -174,7 +174,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Max capacity for monster spawn groups. \nDefault: 70.")
-        int monsterSpawnGroupCapacity = 70;
+        public int monsterSpawnGroupCapacity = 70;
 
         public int getMonsterSpawnGroupCapacity() {
             return Math.max(0, monsterSpawnGroupCapacity);
@@ -182,7 +182,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Max capacity for creature spawn groups. \nDefault: 10.")
-        int creatureSpawnGroupCapacity = 10;
+        public int creatureSpawnGroupCapacity = 10;
 
         public int getCreatureSpawnGroupCapacity() {
             return Math.max(0, creatureSpawnGroupCapacity);
@@ -190,7 +190,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Max capacity for ambient spawn groups. \nDefault: 15.")
-        int ambientSpawnGroupCapacity = 15;
+        public int ambientSpawnGroupCapacity = 15;
 
         public int getAmbientSpawnGroupCapacity() {
             return Math.max(0, ambientSpawnGroupCapacity);
@@ -198,7 +198,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Max capacity for water creature spawn groups (e.g., Axolotls). \nDefault: 5.")
-        int waterCreatureSpawnGroupCapacity = 5;
+        public int waterCreatureSpawnGroupCapacity = 5;
 
         public int getWaterCreatureSpawnGroupCapacity() {
             return Math.max(0, waterCreatureSpawnGroupCapacity);
@@ -206,7 +206,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Max capacity for water ambient spawn groups. \nDefault: 20.")
-        int waterAmbientSpawnGroupCapacity = 20;
+        public int waterAmbientSpawnGroupCapacity = 20;
 
         public int getWaterAmbientSpawnGroupCapacity() {
             return Math.max(0, waterAmbientSpawnGroupCapacity);
@@ -214,17 +214,17 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Tick time required for mob entities to despawn. \nDefault: 600.")
-        int mobDespawnTime = 600;
+        public int mobDespawnTime = 600;
 
         public int getMobDespawnTime() {
             return Math.max(0, mobDespawnTime);
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Chance for mob entities to despawn. \nDefault: 800.")
-        int mobDespawnChance = 800;
+        @Comment("Chance for mob entities to despawn. \nDefault: 0.00125.")
+        public float mobDespawnChance = 0.00125f;
 
-        public int getMobDespawnChance() {
+        public float getMobDespawnChance() {
             return Math.max(0, mobDespawnChance);
         }
     }

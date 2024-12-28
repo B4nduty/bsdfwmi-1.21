@@ -51,7 +51,6 @@ public class LivingEntityMixin {
         World world = entity.getWorld();
         if (!(world instanceof ServerWorld serverWorld) || entity instanceof PlayerEntity) return;
 
-        setTickTime(getTickTime() + 1);
 
         MinecraftServer server = serverWorld.getServer();
         List<String> blacklistedMobs = TickTweaks.CONFIG.stopTick.getStopBlacklist();
@@ -65,6 +64,7 @@ public class LivingEntityMixin {
         if (entityIsBlacklisted || TickHandlerUtil.handleTickCancellation(server, ci, isOutsideRadius,
                 TickTweaks.CONFIG.tickRateTime.getSpecificTickRateLivingEntities(), getTickTime()))
             setTickTime(0);
+        else setTickTime(getTickTime() + 1);
     }
 
     @Unique
