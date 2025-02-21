@@ -39,13 +39,6 @@
   "text.autoconfig.ticktweaks.option.misc.distanceItemEntities.@Tooltip[0]": "Min Distance: 0.5 blocks",
   "text.autoconfig.ticktweaks.option.misc.distanceItemEntities.@Tooltip[1]": "Max Distance: 10 blocks",
   "text.autoconfig.ticktweaks.option.misc.distanceItemEntities.@Tooltip[2]": "Disabled with ServerCore, configure in ServerCore settings",
-  "text.autoconfig.ticktweaks.option.misc.maxSpawnerMobs": "Max Mobs Spawned from Spawners",
-  "text.autoconfig.ticktweaks.option.misc.spawnerRange": "Spawner Spawn Range",
-  "text.autoconfig.ticktweaks.option.misc.monsterSpawnGroupCapacity": "Max Capacity for Monster Spawn Groups",
-  "text.autoconfig.ticktweaks.option.misc.creatureSpawnGroupCapacity": "Max Capacity for Creature Spawn Groups",
-  "text.autoconfig.ticktweaks.option.misc.ambientSpawnGroupCapacity": "Max Capacity for Ambient Spawn Groups",
-  "text.autoconfig.ticktweaks.option.misc.waterCreatureSpawnGroupCapacity": "Max Capacity for Water Creature Spawn Groups",
-  "text.autoconfig.ticktweaks.option.misc.waterAmbientSpawnGroupCapacity": "Max Capacity for Water Ambient Spawn Groups",
   "text.autoconfig.ticktweaks.option.misc.mobDespawnTime": "Time for Mob Entities to Despawn",
   "text.autoconfig.ticktweaks.option.misc.mobDespawnChance": "Chance for Mob Entities to Despawn"
 }

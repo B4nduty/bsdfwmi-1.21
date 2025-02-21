@@ -6,13 +6,10 @@
     "ItemEntityMixin",
     "LivingEntityMixin",
     "MobEntityMixin",
-    "MobSpawnerLogicMixin",
     "NetherPortalBlockMixin",
-    "SpawnGroupMixin",
     "WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "plugin": "banduty.ticktweaks.mixin.MixinPlugin"
+  }
 }

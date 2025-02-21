@@ -157,62 +157,6 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Maximum number of mobs that can spawn from spawners. \nDefault: 6 mobs.")
-        public int maxSpawnerMobs = 6;
-
-        public int getMaxSpawnerMobs() {
-            return Math.max(0, maxSpawnerMobs);
-        }
-
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Range around a spawner where mobs can spawn. \nDefault: 4 blocks.")
-        public int spawnerRange = 4;
-
-        public int getSpawnerRange() {
-            return Math.max(0, spawnerRange);
-        }
-
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Max capacity for monster spawn groups. \nDefault: 70.")
-        public int monsterSpawnGroupCapacity = 70;
-
-        public int getMonsterSpawnGroupCapacity() {
-            return Math.max(0, monsterSpawnGroupCapacity);
-        }
-
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Max capacity for creature spawn groups. \nDefault: 10.")
-        public int creatureSpawnGroupCapacity = 10;
-
-        public int getCreatureSpawnGroupCapacity() {
-            return Math.max(0, creatureSpawnGroupCapacity);
-        }
-
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Max capacity for ambient spawn groups. \nDefault: 15.")
-        public int ambientSpawnGroupCapacity = 15;
-
-        public int getAmbientSpawnGroupCapacity() {
-            return Math.max(0, ambientSpawnGroupCapacity);
-        }
-
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Max capacity for water creature spawn groups (e.g., Axolotls). \nDefault: 5.")
-        public int waterCreatureSpawnGroupCapacity = 5;
-
-        public int getWaterCreatureSpawnGroupCapacity() {
-            return Math.max(0, waterCreatureSpawnGroupCapacity);
-        }
-
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Max capacity for water ambient spawn groups. \nDefault: 20.")
-        public int waterAmbientSpawnGroupCapacity = 20;
-
-        public int getWaterAmbientSpawnGroupCapacity() {
-            return Math.max(0, waterAmbientSpawnGroupCapacity);
-        }
-
-        @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Tick time required for mob entities to despawn. \nDefault: 600.")
         public int mobDespawnTime = 600;
 
