@@ -72,17 +72,6 @@ public class EnableTickRateCommand {
                                         )
                                 )
                         )
-                        .then(CommandManager.literal("netherPortalBlock")
-                                .executes(EnableTickRateCommand::enableTickRate)
-                                .then(CommandManager.literal("reset")
-                                        .executes(EnableTickRateCommand::resetEnableTickRate)
-                                )
-                                .then(CommandManager.literal("set")
-                                        .then(CommandManager.argument("enable", BoolArgumentType.bool())
-                                                .executes(EnableTickRateCommand::setEnableTickRate)
-                                        )
-                                )
-                        )
                 )
         );
     }
@@ -93,11 +82,9 @@ public class EnableTickRateCommand {
 
         switch (type) {
             case "Overworld" -> enable = CONFIG.enableCustomTick.tickOverworld;
-            case "Nether" -> enable = CONFIG.enableCustomTick.tickNether;
             case "End" -> enable = CONFIG.enableCustomTick.tickEnd;
             case "Item Entities" -> enable = CONFIG.enableCustomTick.changeTickRateItemEntities;
             case "Block Entities" -> enable = CONFIG.enableCustomTick.changeTickRateBlockEntities;
-            case "Nether Portal Block" -> enable = CONFIG.enableCustomTick.changeTickRateNetherPortalBlock;
             case null, default -> {
                 context.getSource().sendError(Text.literal("Unknown type: " + type));
                 return 0;
@@ -117,10 +104,6 @@ public class EnableTickRateCommand {
                 CONFIG.enableCustomTick.tickOverworld = true;
                 reset = true;
             }
-            case "Nether" -> {
-                CONFIG.enableCustomTick.tickNether = true;
-                reset = true;
-            }
             case "End" -> {
                 CONFIG.enableCustomTick.tickEnd = true;
                 reset = true;
@@ -132,10 +115,6 @@ public class EnableTickRateCommand {
             case "Block Entities" -> {
                 CONFIG.enableCustomTick.changeTickRateBlockEntities = false;
                 reset = false;
-            }
-            case "Nether Portal Block" -> {
-                CONFIG.enableCustomTick.changeTickRateNetherPortalBlock = true;
-                reset = true;
             }
             case null, default -> {
                 context.getSource().sendError(Text.literal("Unknown type: " + type));
@@ -155,11 +134,9 @@ public class EnableTickRateCommand {
 
         switch (type) {
             case "Overworld" -> CONFIG.enableCustomTick.tickOverworld = newBoolean;
-            case "Nether" -> CONFIG.enableCustomTick.tickNether = newBoolean;
             case "End" -> CONFIG.enableCustomTick.tickEnd = newBoolean;
             case "Item Entities" -> CONFIG.enableCustomTick.changeTickRateItemEntities = newBoolean;
             case "Block Entities" -> CONFIG.enableCustomTick.changeTickRateBlockEntities = newBoolean;
-            case "Nether Portal Block" -> CONFIG.enableCustomTick.changeTickRateNetherPortalBlock = newBoolean;
             case null, default -> {
                 context.getSource().sendError(Text.literal("Unknown type: " + type));
                 return 0;
@@ -176,11 +153,9 @@ public class EnableTickRateCommand {
         String output;
 
         if (input.contains("overworld")) output = "Overworld";
-        else if (input.contains("nether")) output = "Nether";
         else if (input.contains("end")) output = "End";
         else if (input.contains("itemEntities")) output = "Item Entities";
         else if (input.contains("blockEntities")) output = "Block Entities";
-        else if (input.contains("netherPortalBlock")) output = "Nether Portal Block";
         else {
             context.getSource().sendError(Text.literal("Unknown type: " + input));
             return null;

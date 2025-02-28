@@ -10,8 +10,6 @@
   "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateItemEntities.@Tooltip": "0 = Basado en TPS",
   "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateBlockEntities": "Tasa de Ticks para Entidades de Bloques",
   "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateBlockEntities.@Tooltip": "0 = Basado en TPS",
-  "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateNetherPortalBlocks": "Tasa de Ticks para Bloques de Portal del Nether",
-  "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateNetherPortalBlocks.@Tooltip": "0 = Basado en TPS",
 
   "text.autoconfig.ticktweaks.category.enableCustomTick": "Habilitar Tasa de Ticks Personalizado",
   "text.autoconfig.ticktweaks.option.enableCustomTick.tickOverworld": "Cambiar Tasa de Ticks para el Mundo",
@@ -22,7 +20,6 @@
   "text.autoconfig.ticktweaks.option.enableCustomTick.blacklistedLivingEntities.@Tooltip[1]": "Grupos: #minecraft:hostile, #minecraft:passive y #minecraft:neutral",
   "text.autoconfig.ticktweaks.option.enableCustomTick.changeTickRateItemEntities": "Cambiar Tasa de Ticks Entidades de Objetos",
   "text.autoconfig.ticktweaks.option.enableCustomTick.changeTickRateBlockEntities": "Cambiar Tasa de Ticks Entidades de Bloques",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.changeTickRateNetherPortalBlock": "Cambiar Tasa de Ticks Bloques de Portal",
 
   "text.autoconfig.ticktweaks.category.stopTick": "Detener Tick",
   "text.autoconfig.ticktweaks.option.stopTick.emergencyStopTps": "Detención de Emergencia por TPS",

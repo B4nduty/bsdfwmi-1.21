@@ -3,12 +3,10 @@ package banduty.ticktweaks.mixin;
 import banduty.ticktweaks.TickTweaks;
 import banduty.ticktweaks.util.TickHandlerUtil;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
@@ -61,13 +59,13 @@ public abstract class ItemEntityMixin {
         if (this.tickTimeBoolean) {
             this.tickTimeBoolean = false;
         }
-        Entity entity = (ItemEntity) (Object) this;
-        World world = entity.getWorld();
-        if (!(world instanceof ServerWorld serverWorld) || entity instanceof PlayerEntity) return;
+        ItemEntity itemEntity = (ItemEntity) (Object) this;
+        World world = itemEntity.getWorld();
+        if (!(world instanceof ServerWorld serverWorld)) return;
 
         MinecraftServer server = serverWorld.getServer();
 
-        if (!TickTweaks.CONFIG.enableCustomTick.changeTickRateItemEntities || TickHandlerUtil.handleTickCancellation(server, ci, false,
+        if (!TickTweaks.CONFIG.enableCustomTick.changeTickRateItemEntities || TickHandlerUtil.tickCancellation(server, ci, false,
                 TickTweaks.CONFIG.tickRateTime.getSpecificTickRateItemEntities(), getTickTime()))
             setTickTime(0);
         else setTickTime(getTickTime() + 1);

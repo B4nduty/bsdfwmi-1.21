@@ -7,29 +7,13 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
 public class TickHandlerUtil {
-
-    public static boolean validateAndCancelTick(ServerWorld serverWorld, CallbackInfo ci, int specificTickRate, int tickCounter) {
-        if (TickRateCalculator.shouldSkipTicking(serverWorld)) return true;
-
-        MinecraftServer server = serverWorld.getServer();
-        int tickRate = TickRateCalculator.getCustomTickRate(server, specificTickRate);
-        double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
-
-        if (tickCounter < tickRate || tps < TickTweaks.CONFIG.stopTick.getEmergencyStopTps()) {
-            ci.cancel();
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean handleTickCancellation(MinecraftServer server, CallbackInfo ci, boolean isOutsideRadius, int specificTickRate, int tickCounter) {
+    public static boolean tickCancellation(MinecraftServer server, CallbackInfo ci, boolean isOutsideRadius, int specificTickRate, int tickCounter) {
         int tickRate = isOutsideRadius ? TickTweaks.CONFIG.stopTick.getTickingTimeOnStop() : TickRateCalculator.getCustomTickRate(server, specificTickRate);
         if (tickCounter < tickRate || tickRate == 0) {
             ci.cancel();

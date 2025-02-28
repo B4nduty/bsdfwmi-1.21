@@ -2,6 +2,7 @@ package banduty.ticktweaks.mixin;
 
 import banduty.ticktweaks.TickTweaks;
 import banduty.ticktweaks.util.TickHandlerUtil;
+import banduty.ticktweaks.util.TickRateCalculator;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,9 +19,13 @@ public abstract class WorldMixin {
     private void onTickBlockEntities(CallbackInfo ci) {
         World world = (World) (Object) this;
         if (!(world instanceof ServerWorld serverWorld)) return;
-        if (TickTweaks.CONFIG.enableCustomTick.changeTickRateBlockEntities) return;
-        if (TickHandlerUtil.validateAndCancelTick(serverWorld, ci, TickTweaks.CONFIG.tickRateTime.getSpecificTickRateBlockEntities(), blockEntitiesTickCounter)) {
+        double tps = Math.min(1000.0 / serverWorld.getServer().getAverageTickTime(), 20.0);
+        if (TickRateCalculator.shouldSkipTicking(serverWorld)) return;
+        if (!TickTweaks.CONFIG.enableCustomTick.changeTickRateBlockEntities) return;
+        if (tps < TickTweaks.CONFIG.stopTick.getEmergencyStopTps()) ci.cancel();
+        blockEntitiesTickCounter++;
+        if (TickHandlerUtil.tickCancellation(serverWorld.getServer(), ci, false, TickTweaks.CONFIG.tickRateTime.getSpecificTickRateBlockEntities(), blockEntitiesTickCounter)) {
             blockEntitiesTickCounter = 0;
-        } else blockEntitiesTickCounter++;
+        }
     }
 }

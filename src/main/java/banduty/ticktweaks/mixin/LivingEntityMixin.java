@@ -2,7 +2,7 @@ package banduty.ticktweaks.mixin;
 
 import banduty.ticktweaks.TickTweaks;
 import banduty.ticktweaks.util.TickHandlerUtil;
-import net.minecraft.entity.Entity;
+import banduty.ticktweaks.util.TickRateCalculator;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -23,6 +23,8 @@ import java.util.List;
 public class LivingEntityMixin {
     @Unique
     private static final TrackedData<Integer> TICK_TIME;
+    @Unique
+    private final LivingEntity livingEntity = ((LivingEntity) (Object) this);
 
     static {
         TICK_TIME = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -32,11 +34,13 @@ public class LivingEntityMixin {
 
     @Inject(method = "initDataTracker", at = @At("TAIL"))
     private void addCustomPropertiesToDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
+        if (livingEntity instanceof PlayerEntity) return;
         builder.add(TICK_TIME, 0);
     }
 
     @Inject(method = "onTrackedDataSet", at = @At("TAIL"))
     private void markCustomPropertiesAsSet(TrackedData<?> data, CallbackInfo ci) {
+        if (livingEntity instanceof PlayerEntity) return;
         if (TICK_TIME.equals(data)) {
             this.tickTimeBoolean = true;
         }
@@ -47,24 +51,21 @@ public class LivingEntityMixin {
         if (this.tickTimeBoolean) {
             this.tickTimeBoolean = false;
         }
-        Entity entity = (LivingEntity) (Object) this;
-        World world = entity.getWorld();
-        if (!(world instanceof ServerWorld serverWorld) || entity instanceof PlayerEntity) return;
-
+        World world = livingEntity.getWorld();
+        if (!(world instanceof ServerWorld serverWorld) || livingEntity instanceof PlayerEntity) return;
+        if (TickRateCalculator.shouldSkipTicking(serverWorld)) return;
 
         MinecraftServer server = serverWorld.getServer();
         List<String> blacklistedMobs = TickTweaks.CONFIG.stopTick.getStopBlacklist();
         List<String> blacklistedLivingEntities = TickTweaks.CONFIG.enableCustomTick.getBlacklistedLivingEntities();
         int radiusThreshold = TickTweaks.CONFIG.stopTick.getStopTickingDistance();
 
-        boolean isOutsideRadius = !blacklistedMobs.contains(entity.getType().toString())
-                && TickHandlerUtil.isEntityWithinRadius(entity, world, radiusThreshold);
-        boolean entityIsBlacklisted = TickHandlerUtil.isEntityBlacklisted(entity, blacklistedLivingEntities);
-
-        if (entityIsBlacklisted || TickHandlerUtil.handleTickCancellation(server, ci, isOutsideRadius,
-                TickTweaks.CONFIG.tickRateTime.getSpecificTickRateLivingEntities(), getTickTime()))
-            setTickTime(0);
-        else setTickTime(getTickTime() + 1);
+        boolean isOutsideRadius = !blacklistedMobs.contains(livingEntity.getType().toString())
+                && TickHandlerUtil.isEntityWithinRadius(livingEntity, world, radiusThreshold);
+        boolean entityIsBlacklisted = TickHandlerUtil.isEntityBlacklisted(livingEntity, blacklistedLivingEntities);
+        setTickTime(getTickTime() + 1);
+        if (entityIsBlacklisted || TickHandlerUtil.tickCancellation(server, ci, isOutsideRadius,
+                TickTweaks.CONFIG.tickRateTime.getSpecificTickRateLivingEntities(), getTickTime())) setTickTime(0);
     }
 
     @Unique

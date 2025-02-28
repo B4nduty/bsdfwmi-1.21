@@ -61,7 +61,6 @@ public class SpecificTickRateCommand {
             case "Living Entities" -> tickRate = CONFIG.tickRateTime.getSpecificTickRateLivingEntities();
             case "Item Entities" -> tickRate = CONFIG.tickRateTime.getSpecificTickRateItemEntities();
             case "Block Entities" -> tickRate = CONFIG.tickRateTime.getSpecificTickRateBlockEntities();
-            case "Nether Portal Block" -> tickRate = CONFIG.tickRateTime.getSpecificTickRateNetherPortalBlocks();
             case null, default -> {
                 context.getSource().sendError(Text.literal("Unknown type: " + type));
                 return 0;
@@ -79,7 +78,6 @@ public class SpecificTickRateCommand {
             case "Living Entities" -> CONFIG.tickRateTime.specificTickRateLivingEntities = 0;
             case "Item Entities" -> CONFIG.tickRateTime.specificTickRateItemEntities = 0;
             case "Block Entities" -> CONFIG.tickRateTime.specificTickRateBlockEntities = 0;
-            case "Nether Portal Block" -> CONFIG.tickRateTime.specificTickRateNetherPortalBlocks = 0;
             case null, default -> {
                 context.getSource().sendError(Text.literal("Unknown type: " + type));
                 return 0;
@@ -99,7 +97,6 @@ public class SpecificTickRateCommand {
             case "Living Entities" -> CONFIG.tickRateTime.specificTickRateLivingEntities = newFormula;
             case "Item Entities" -> CONFIG.tickRateTime.specificTickRateItemEntities = newFormula;
             case "Block Entities" -> CONFIG.tickRateTime.specificTickRateBlockEntities = newFormula;
-            case "Nether Portal Block" -> CONFIG.tickRateTime.specificTickRateNetherPortalBlocks = newFormula;
             case null, default -> {
                 context.getSource().sendError(Text.literal("Unknown type: " + type));
                 return 0;
@@ -118,7 +115,6 @@ public class SpecificTickRateCommand {
         if (input.contains("livingEntities")) output = "Living Entities";
         else if (input.contains("itemEntities")) output = "Item Entities";
         else if (input.contains("blockEntities")) output = "Block Entities";
-        else if (input.contains("netherPortalBlock")) output = "Nether Portal Block";
         else {
             context.getSource().sendError(Text.literal("Unknown type: " + input));
             return null;

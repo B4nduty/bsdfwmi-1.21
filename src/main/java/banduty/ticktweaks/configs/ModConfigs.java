@@ -63,14 +63,6 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         public int getSpecificTickRateBlockEntities() {
             return Math.max(0, specificTickRateBlockEntities);
         }
-
-        @ConfigEntry.Gui.Tooltip()
-        @Comment("Tick Rate for Nether Portal Blocks. \nSet to 0 for a TPS-based Tick Rate.")
-        public int specificTickRateNetherPortalBlocks = 0;
-
-        public int getSpecificTickRateNetherPortalBlocks() {
-            return Math.max(0, specificTickRateNetherPortalBlocks);
-        }
     }
 
     @Config(name = TickTweaks.MOD_ID + "-enableCustomTick")
@@ -103,10 +95,6 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         @ConfigEntry.Gui.Tooltip(count = 0)
         @Comment("Enable custom Tick Rate for Block Entities. \nDefault: false")
         public boolean changeTickRateBlockEntities = false;
-
-        @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("Enable custom Tick Rate for Nether Portal Blocks. \nDefault: true")
-        public boolean changeTickRateNetherPortalBlock = true;
     }
 
     @Config(name = TickTweaks.MOD_ID + "-stopTick")
