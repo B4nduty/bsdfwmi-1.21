@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public class MobEntityMixin {
     @ModifyConstant(method = "checkDespawn", constant = @Constant(intValue = 600))
     private int ticktweaks$checkDespawnTime(int constant) {
-        return TickTweaks.CONFIG.misc.getMobDespawnTime();
+        return TickTweaks.CONFIG.performanceSettings.mobDespawn.getDespawnTime();
     }
 
     @ModifyConstant(method = "checkDespawn", constant = @Constant(intValue = 800))
     private int ticktweaks$checkDespawnChance(int constant) {
-        return (int) (1 / TickTweaks.CONFIG.misc.getMobDespawnChance());
+        return (int) (1 / TickTweaks.CONFIG.performanceSettings.mobDespawn.getDespawnChance());
     }
 }

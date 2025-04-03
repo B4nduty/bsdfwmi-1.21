@@ -5,6 +5,7 @@
   "mixins": [
     "ItemEntityMixin",
     "LivingEntityMixin",
+    "MinecraftServerMixin",
     "MobEntityMixin",
     "WorldMixin"
   ],

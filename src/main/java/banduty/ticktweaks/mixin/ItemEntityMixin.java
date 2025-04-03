@@ -28,8 +28,9 @@ public abstract class ItemEntityMixin {
     }
 
     @Unique private boolean tickTimeBoolean;
+
     @Unique
-    double distanceItemEntities = TickTweaks.CONFIG.misc.getDistanceItemEntities();
+    double itemDetectionRange = TickTweaks.CONFIG.entityTickSettings.itemEntities.getDetectionRange();
 
     @ModifyArgs(
             method = "tryMerge()V",
@@ -37,8 +38,8 @@ public abstract class ItemEntityMixin {
     )
     private void ticktweaks$modifyMergeArgs(Args args) {
         if (!FabricLoader.getInstance().isModLoaded("servercore")) {
-            args.set(0, distanceItemEntities);
-            args.set(2, distanceItemEntities);
+            args.set(0, itemDetectionRange);
+            args.set(2, itemDetectionRange);
         }
     }
 
@@ -65,8 +66,8 @@ public abstract class ItemEntityMixin {
 
         MinecraftServer server = serverWorld.getServer();
 
-        if (!TickTweaks.CONFIG.enableCustomTick.changeTickRateItemEntities || TickHandlerUtil.tickCancellation(server, ci, false,
-                TickTweaks.CONFIG.tickRateTime.getSpecificTickRateItemEntities(), getTickTime()))
+        if (!TickTweaks.CONFIG.entityTickSettings.itemEntities.enabled || TickHandlerUtil.tickCancellation(server, ci, false,
+                TickTweaks.CONFIG.entityTickSettings.itemEntities.getFixedTickRate(), getTickTime(), 0))
             setTickTime(0);
         else setTickTime(getTickTime() + 1);
     }

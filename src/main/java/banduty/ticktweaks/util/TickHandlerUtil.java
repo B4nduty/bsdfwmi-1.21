@@ -1,21 +1,35 @@
 package banduty.ticktweaks.util;
 
-import banduty.ticktweaks.TickTweaks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.SlimeEntity;
-import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TickHandlerUtil {
-    public static boolean tickCancellation(MinecraftServer server, CallbackInfo ci, boolean isOutsideRadius, int specificTickRate, int tickCounter) {
-        int tickRate = isOutsideRadius ? TickTweaks.CONFIG.stopTick.getTickingTimeOnStop() : TickRateCalculator.getCustomTickRate(server, specificTickRate);
-        if (tickCounter < tickRate || tickRate == 0) {
+    private static final Set<Entity> GLOBAL_VISIBLE_ENTITIES = ConcurrentHashMap.newKeySet();
+    private static final Map<String, TagKey<EntityType<?>>> TAG_CACHE = new ConcurrentHashMap<>();
+    private static long lastCacheUpdate = 0;
+
+    public static boolean tickCancellation(MinecraftServer server, CallbackInfo ci,
+                                           boolean isWithinRadius, int specificTickRate,
+                                           int tickCounter, int tickingTimeOnStop) {
+        final int tickRate = isWithinRadius ?
+                TickRateCalculator.getCustomTickRate(server, specificTickRate) :
+                tickingTimeOnStop;
+
+        if (tickRate == 0 || tickCounter < tickRate) {
             ci.cancel();
             return false;
         }
@@ -23,20 +37,74 @@ public class TickHandlerUtil {
     }
 
     public static boolean isEntityWithinRadius(Entity entity, World world, int radiusThreshold) {
-        double squaredRadius = Math.pow(radiusThreshold, 2);
-        return world.getPlayers().stream().noneMatch(player -> player.squaredDistanceTo(entity) <= squaredRadius);
+        final double squaredRadius = (double) radiusThreshold * radiusThreshold;
+        for (PlayerEntity player : world.getPlayers()) {
+            if (player.squaredDistanceTo(entity) <= squaredRadius) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static boolean isEntityBlacklisted(Entity entity, List<String> blacklistedEntities) {
-        String entityType = entity.getType().toString();
-        if (blacklistedEntities.contains(entityType) && !entity.hasPassengers()) return true;
+    public static boolean isOnPlayerScreen(Entity entity, World world) {
+        if (!(world instanceof ServerWorld serverWorld)) return false;
 
-        if (entity instanceof HostileEntity || entity instanceof SlimeEntity) {
-            return blacklistedEntities.contains("#minecraft:hostile");
-        } else if (entity instanceof Angerable) {
-            return blacklistedEntities.contains("#minecraft:neutral");
-        } else if (entity instanceof PassiveEntity) {
-            return blacklistedEntities.contains("#minecraft:passive");
+        final long currentTime = world.getTime();
+        if (currentTime - lastCacheUpdate > 30) {
+            updateVisibleEntitiesCache(serverWorld);
+            lastCacheUpdate = currentTime;
+        }
+
+        return GLOBAL_VISIBLE_ENTITIES.contains(entity);
+    }
+
+    private static void updateVisibleEntitiesCache(ServerWorld world) {
+        GLOBAL_VISIBLE_ENTITIES.clear();
+        final double maxDistance = 32.0;
+        final double fovThreshold = 0.33;
+
+        world.getPlayers().parallelStream().forEach(player -> {
+            final Vec3d eyePos = player.getEyePos();
+            final Vec3d lookVec = player.getRotationVec(1.0F);
+
+            world.getOtherEntities(player, player.getBoundingBox().expand(maxDistance))
+                    .forEach(entity -> {
+                        final Vec3d toEntity = entity.getPos().subtract(eyePos).normalize();
+                        if (lookVec.dotProduct(toEntity) > fovThreshold) {
+                            GLOBAL_VISIBLE_ENTITIES.add(entity);
+                        }
+                    });
+        });
+    }
+
+    public static boolean matchesEntity(LivingEntity entity, List<String> matchers) {
+        if (matchers.isEmpty()) return false;
+
+        final EntityType<?> type = entity.getType();
+        final String entityId = EntityType.getId(type).toString();
+        final Registry<EntityType<?>> registry = entity.getWorld()
+                .getRegistryManager()
+                .getOrThrow(Registries.ENTITY_TYPE.getKey());
+
+        return matchers.stream().anyMatch(matcher ->
+                checkMatch(matcher, entityId, registry, type)
+        );
+    }
+
+    private static boolean checkMatch(String matcher, String entityId,
+                                      Registry<EntityType<?>> registry,
+                                      EntityType<?> type) {
+        if (matcher.equals(entityId)) return true;
+
+        if (matcher.startsWith("#")) {
+            final TagKey<EntityType<?>> tagKey = TAG_CACHE.computeIfAbsent(
+                    matcher,
+                    m -> TagKey.of(
+                            Registries.ENTITY_TYPE.getKey(),
+                            Identifier.of(m.substring(1).replace("minecraft:", ""))
+                    )
+            );
+            return registry.getEntry(type).isIn(tagKey);
         }
         return false;
     }

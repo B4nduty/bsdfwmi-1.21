@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.8-SNAPSHOT'
+	id 'fabric-loom' version '1.10-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -38,7 +38,7 @@ dependencies {
 
 	modApi "com.terraformersmc:modmenu:${project.modmenu}"
 
-	modImplementation "curse.maven:streq-1139970:${project.streq_version}"
+	modImplementation project(':streq')
 	
 }
 

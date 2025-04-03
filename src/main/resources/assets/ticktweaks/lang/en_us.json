@@ -1,41 +1,58 @@
 {
-  "text.autoconfig.ticktweaks.title": "Banduty's DFWMI",
+  "text.autoconfig.ticktweaks.title": "Tick Tweaks",
 
-  "text.autoconfig.ticktweaks.category.tickRateTime": "Tick Rate Time",
-  "text.autoconfig.ticktweaks.option.tickRateTime.tickRateFormula": "Formula Tick Rate Calculation",
-  "text.autoconfig.ticktweaks.option.tickRateTime.tickRateFormula.@Tooltip": "Use tps as the variable for TPS",
-  "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateLivingEntities": "Tick Rate for Living Entities",
-  "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateLivingEntities.@Tooltip": "Set to 0 for TPS-based Tick Rate",
-  "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateItemEntities": "Tick Rate for Item Entities",
-  "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateItemEntities.@Tooltip": "Set to 0 for TPS-based Tick Rate",
-  "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateBlockEntities": "Tick Rate for Block Entities",
-  "text.autoconfig.ticktweaks.option.tickRateTime.specificTickRateBlockEntities.@Tooltip": "Set to 0 for TPS-based Tick Rate",
+  "text.autoconfig.ticktweaks.category.coreTickSettings": "Core Tick Settings",
+  "text.autoconfig.ticktweaks.option.coreTickSettings.tickRateFormula": "Formula Tick Rate Calculation",
+  "text.autoconfig.ticktweaks.option.coreTickSettings.tickRateFormula.@Tooltip": "Use tps as the variable for TPS",
+  "text.autoconfig.ticktweaks.option.coreTickSettings.enabledDimensions": "Enable Change TR for Dimensions",
 
-  "text.autoconfig.ticktweaks.category.enableCustomTick": "Enable Custom Tick",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.tickOverworld": "Change Tick Rate for Overworld",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.tickNether": "Change Tick Rate for Nether",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.tickEnd": "Change Tick Rate for End",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.blacklistedLivingEntities": "Living Entities excluded from custom tick rate",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.blacklistedLivingEntities.@Tooltip[0]": "e.g.: minecraft:zombie, minecraft:skeleton",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.blacklistedLivingEntities.@Tooltip[1]": "Groups: #minecraft:hostile, #minecraft:passive & #minecraft:neutral",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.changeTickRateItemEntities": "Change Tick Rate for Item Entities",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.changeTickRateBlockEntities": "Change Tick Rate for Block Entities",
 
-  "text.autoconfig.ticktweaks.category.stopTick": "Stop Tick",
-  "text.autoconfig.ticktweaks.option.stopTick.emergencyStopTps": "Emergency Stop TPS; Halts Block Entity Ticking",
-  "text.autoconfig.ticktweaks.option.stopTick.stopTickingDistance": "Stop Mobs from Ticking in Player's Range",
-  "text.autoconfig.ticktweaks.option.stopTick.stopTickingDistance.@Tooltip": "Set to 0 to disable stopping",
-  "text.autoconfig.ticktweaks.option.stopTick.tickingTimeOnStop": "Tick Rate Change Upon Stop",
-  "text.autoconfig.ticktweaks.option.stopTick.tickingTimeOnStop.@Tooltip": "Set to 0 to completely stop ticking",
-  "text.autoconfig.ticktweaks.option.stopTick.stopBlacklist": "Mobs exempt from distance-based stop",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.stopBlacklist.@Tooltip[0]": "e.g.: minecraft:zombie, minecraft:skeleton",
-  "text.autoconfig.ticktweaks.option.enableCustomTick.stopBlacklist.@Tooltip[1]": "Groups: #minecraft:hostile, #minecraft:passive & #minecraft:neutral",
+  "text.autoconfig.ticktweaks.category.emergencySettings": "Emergency Settings",
+  "text.autoconfig.ticktweaks.option.emergencySettings.tpsThreshold": "TPS threshold for emergency systems",
+  "text.autoconfig.ticktweaks.option.emergencySettings.tpsThreshold.@Tooltip": "Block entity freeze",
 
-  "text.autoconfig.ticktweaks.category.misc": "Miscellaneous",
-  "text.autoconfig.ticktweaks.option.misc.distanceItemEntities": "Detection Range for Item Entities",
-  "text.autoconfig.ticktweaks.option.misc.distanceItemEntities.@Tooltip[0]": "Min Distance: 0.5 blocks",
-  "text.autoconfig.ticktweaks.option.misc.distanceItemEntities.@Tooltip[1]": "Max Distance: 10 blocks",
-  "text.autoconfig.ticktweaks.option.misc.distanceItemEntities.@Tooltip[2]": "Disabled with ServerCore, configure in ServerCore settings",
-  "text.autoconfig.ticktweaks.option.misc.mobDespawnTime": "Time for Mob Entities to Despawn",
-  "text.autoconfig.ticktweaks.option.misc.mobDespawnChance": "Chance for Mob Entities to Despawn"
+
+  "text.autoconfig.ticktweaks.category.entityTickSettings": "Entity Tick Settings",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.livingEntities": "Living Entities",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.livingEntities.fixedTickRate": "Fixed tick rate",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.livingEntities.fixedTickRate.@Tooltip": "0 for dynamic TPS-based rate",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.livingEntities.nonVisibleTickRate": "TR not rendered entities",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.livingEntities.exemptEntities": "Exempt list from tick adjustments",
+
+  "text.autoconfig.ticktweaks.option.entityTickSettings.itemEntities": "Item Entities",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.itemEntities.fixedTickRate": "Fixed tick rate",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.itemEntities.fixedTickRate.@Tooltip": "0 for dynamic TPS-based rate",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.itemEntities.enabled": "Enable Dynamic TR for items",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.itemEntities.detectionRange": "Detection range for nearby items",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.itemEntities.detectionRange.@Tooltip": "Blocks",
+
+  "text.autoconfig.ticktweaks.option.entityTickSettings.blockEntities": "Block Entities",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.blockEntities.fixedTickRate": "Fixed tick rate",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.blockEntities.fixedTickRate.@Tooltip": "0 for dynamic TPS-based rate",
+  "text.autoconfig.ticktweaks.option.entityTickSettings.blockEntities.enabled": "Enable Dynamic TR for block entities",
+
+
+  "text.autoconfig.ticktweaks.category.performanceSettings": "Performance Settings",
+  "text.autoconfig.ticktweaks.option.performanceSettings.activationRanges": "Activation Ranges",
+  "text.autoconfig.ticktweaks.option.performanceSettings.activationRanges.enabled": "Enabled",
+
+  "text.autoconfig.ticktweaks.option.performanceSettings.activationRanges.defaultRange": "Default Range",
+  "text.autoconfig.ticktweaks.option.performanceSettings.activationRanges.defaultRange.range": "Range",
+  "text.autoconfig.ticktweaks.option.performanceSettings.activationRanges.defaultRange.tickInterval": "Tick Interval",
+  "text.autoconfig.ticktweaks.option.performanceSettings.activationRanges.defaultRange.wakeupInterval": "Wake-Up Interval",
+
+  "text.autoconfig.ticktweaks.option.performanceSettings.activationRanges.customRanges": "Custom Ranges",
+  "text.autoconfig.ticktweaks.option.CustomActivationRange": "Custom Activation Range",
+  "text.autoconfig.ticktweaks.option.CustomActivationRange.name": "Name",
+  "text.autoconfig.ticktweaks.option.CustomActivationRange.range": "Range",
+  "text.autoconfig.ticktweaks.option.CustomActivationRange.tickInterval": "Tick Interval",
+  "text.autoconfig.ticktweaks.option.CustomActivationRange.wakeupInterval": "Wake-Up Interval",
+  "text.autoconfig.ticktweaks.option.CustomActivationRange.entities": "Entities",
+
+  "text.autoconfig.ticktweaks.option.performanceSettings.mobDespawn": "Mob Despawn",
+  "text.autoconfig.ticktweaks.option.performanceSettings.mobDespawn.despawnTime": "Time in ticks before mobs despawn",
+  "text.autoconfig.ticktweaks.option.performanceSettings.mobDespawn.despawnChance": "Chance per tick for mobs to despawn",
+
+  "text.autoconfig.ticktweaks.option.performanceSettings.settingsCacheTime": "Time Cache Custom Activation Range",
+  "text.autoconfig.ticktweaks.option.performanceSettings.settingsCacheTime.@Tooltip": "Seconds"
 }
