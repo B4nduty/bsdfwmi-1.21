@@ -1,5 +1,6 @@
 package banduty.ticktweaks.util;
 
+import banduty.ticktweaks.TickTweaks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -78,13 +79,15 @@ public class TickHandlerUtil {
     }
 
     public static boolean matchesEntity(LivingEntity entity, List<String> matchers) {
-        if (matchers.isEmpty()) return false;
+        if (matchers.isEmpty() || entity == null) return false;
 
         final EntityType<?> type = entity.getType();
+        if (type == null) return false;
+
         final String entityId = EntityType.getId(type).toString();
         final Registry<EntityType<?>> registry = entity.getWorld()
                 .getRegistryManager()
-                .getOrThrow(Registries.ENTITY_TYPE.getKey());
+                .get(Registries.ENTITY_TYPE.getKey());
 
         return matchers.stream().anyMatch(matcher ->
                 checkMatch(matcher, entityId, registry, type)
@@ -94,17 +97,25 @@ public class TickHandlerUtil {
     private static boolean checkMatch(String matcher, String entityId,
                                       Registry<EntityType<?>> registry,
                                       EntityType<?> type) {
+        if (matcher == null || entityId == null || registry == null || type == null) {
+            return false;
+        }
+
         if (matcher.equals(entityId)) return true;
 
         if (matcher.startsWith("#")) {
-            final TagKey<EntityType<?>> tagKey = TAG_CACHE.computeIfAbsent(
-                    matcher,
-                    m -> TagKey.of(
-                            Registries.ENTITY_TYPE.getKey(),
-                            Identifier.of(m.substring(1).replace("minecraft:", ""))
-                    )
-            );
-            return registry.getEntry(type).isIn(tagKey);
+            try {
+                final TagKey<EntityType<?>> tagKey = TAG_CACHE.computeIfAbsent(
+                        matcher,
+                        m -> TagKey.of(
+                                Registries.ENTITY_TYPE.getKey(),
+                                Identifier.of(m.substring(1).replace("minecraft:", ""))
+                        ));
+                return registry.getEntry(type).isIn(tagKey);
+            } catch (Exception e) {
+                TickTweaks.LOGGER.error("Error checking entity tag match for {}", matcher, e);
+                return false;
+            }
         }
         return false;
     }
