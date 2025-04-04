@@ -156,7 +156,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, settingsCacheTime);
         }
 
-        public static class ActivationRangeSettings implements ConfigData {
+        public static class ActivationRangeSettings {
             @ConfigEntry.Gui.Tooltip(count = 0)
             @Comment("Enable custom activation ranges")
             public boolean enabled = false;
@@ -191,10 +191,14 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             }
         }
 
-        public static class DefaultActivationRange implements ConfigData {
+        public static class DefaultActivationRange {
             public int range;
             public int tickInterval;
             public int wakeupInterval;
+
+            public DefaultActivationRange() {
+                this(16, -1, -1);
+            }
 
             public DefaultActivationRange(int range, int tickInterval, int wakeupInterval) {
                 this.range = range;
@@ -215,7 +219,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             }
         }
 
-        public static class CustomActivationRange implements ConfigData {
+        public static class CustomActivationRange {
             public String name;
             public int range;
             public int tickInterval;
@@ -256,7 +260,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             }
         }
 
-        public static class MobDespawnSettings implements ConfigData {
+        public static class MobDespawnSettings {
             @ConfigEntry.Gui.Tooltip(count = 0)
             @Comment("Time in ticks before mobs despawn (600 = 30 seconds)")
             public int despawnTime = 600;

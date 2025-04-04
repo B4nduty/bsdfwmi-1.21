@@ -23,11 +23,11 @@ public abstract class WorldMixin {
         if (TickRateCalculator.shouldSkipTicking(serverWorld)) return;
         if (!TickTweaks.CONFIG.entityTickSettings.blockEntities.enabled) return;
         if (tps < TickTweaks.CONFIG.emergencySettings.getTpsThreshold()) ci.cancel();
-        blockEntitiesTickCounter++;
-        if (TickHandlerUtil.tickCancellation(serverWorld.getServer(), ci, false,
+        if (TickHandlerUtil.tickCancellation(serverWorld.getServer(), ci, true,
                 TickTweaks.CONFIG.entityTickSettings.blockEntities.getFixedTickRate(),
                 blockEntitiesTickCounter, 0)) {
             blockEntitiesTickCounter = 0;
         }
+        blockEntitiesTickCounter++;
     }
 }

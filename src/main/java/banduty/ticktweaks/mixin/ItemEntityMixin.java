@@ -66,10 +66,11 @@ public abstract class ItemEntityMixin {
 
         MinecraftServer server = serverWorld.getServer();
 
-        if (!TickTweaks.CONFIG.entityTickSettings.itemEntities.enabled || TickHandlerUtil.tickCancellation(server, ci, false,
+        if (!TickTweaks.CONFIG.entityTickSettings.itemEntities.enabled || TickHandlerUtil.tickCancellation(server, ci, true,
                 TickTweaks.CONFIG.entityTickSettings.itemEntities.getFixedTickRate(), getTickTime(), 0))
             setTickTime(0);
-        else setTickTime(getTickTime() + 1);
+
+        setTickTime(getTickTime() + 1);
     }
 
     @Unique
