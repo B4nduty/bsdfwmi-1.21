@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
@@ -98,25 +99,44 @@ public class TickHandlerUtil {
                                       Registry<EntityType<?>> registry,
                                       EntityType<?> type) {
         if (matcher == null || entityId == null || registry == null || type == null) {
-            return false;
+           return false;
         }
 
-        if (matcher.equals(entityId)) return true;
+        if (matcher.equals(entityId)) {
+            return true;
+        }
 
         if (matcher.startsWith("#")) {
             try {
+                String tagString = matcher.substring(1);
                 final TagKey<EntityType<?>> tagKey = TAG_CACHE.computeIfAbsent(
                         matcher,
                         m -> TagKey.of(
                                 Registries.ENTITY_TYPE.getKey(),
-                                Identifier.of(m.substring(1).replace("minecraft:", ""))
+                                Identifier.tryParse(tagString)
                         ));
-                return registry.getEntry(type).isIn(tagKey);
+
+                if (tagKey == null) {
+                    return false;
+                }
+
+                Optional<RegistryEntryList.Named<EntityType<?>>> optional = registry.getEntryList(tagKey);
+                return optional.map(registryEntries -> registryEntries.contains(registry.getEntry(type))).orElse(false);
             } catch (Exception e) {
                 TickTweaks.LOGGER.error("Error checking entity tag match for {}", matcher, e);
                 return false;
             }
         }
+
+        try {
+            Identifier entityIdentifier = Identifier.tryParse(entityId);
+            if (entityIdentifier != null && matcher.equals(entityIdentifier.getNamespace())) {
+                return true;
+            }
+        } catch (Exception e) {
+            TickTweaks.LOGGER.error("Error checking mod ID match for {}", matcher, e);
+        }
+
         return false;
     }
 }

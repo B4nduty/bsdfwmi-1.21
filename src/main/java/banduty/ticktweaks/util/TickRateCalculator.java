@@ -9,8 +9,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TickRateCalculator {
+
     public static int getCustomTickRate(MinecraftServer server, int specificTickRate) {
-        double tps = Math.min(1000.0 / server.getAverageTickTime(), 20.0);
+        float tickTime = server
+        //? if >= 1.20.3 {
+        .getAverageTickTime();
+        //?} else if >= 1.19.3 && <= 1.20.2 {
+        /*.getTickTime();
+        *///?}
+
+        double tps = Math.min(1000.0 / tickTime, 20.0);
 
         String formula = TickTweaks.CONFIG.coreTickSettings.getTickRateFormula();
         Map<String, Double> variables = new HashMap<>();

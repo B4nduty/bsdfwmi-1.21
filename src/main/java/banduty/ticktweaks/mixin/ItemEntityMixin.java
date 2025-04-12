@@ -7,6 +7,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
@@ -27,8 +28,6 @@ public abstract class ItemEntityMixin {
         TICK_TIME = DataTracker.registerData(ItemEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 
-    @Unique private boolean tickTimeBoolean;
-
     @Unique
     double itemDetectionRange = TickTweaks.CONFIG.entityTickSettings.itemEntities.getDetectionRange();
 
@@ -43,23 +42,22 @@ public abstract class ItemEntityMixin {
         }
     }
 
+    //? if >= 1.19.3 && <= 1.20.4 {
+    /*@Inject(method = "initDataTracker", at = @At("TAIL"))
+    private void addCustomPropertiesToDataTracker(CallbackInfo ci) {
+        ((ItemEntity) (Object) this).getDataTracker().startTracking(TICK_TIME, 0);
+    }
+    *///?}
+
+    //? if >= 1.20.5 {
     @Inject(method = "initDataTracker", at = @At("TAIL"))
     private void addCustomPropertiesToDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
         builder.add(TICK_TIME, 0);
     }
-
-    @Inject(method = "onTrackedDataSet", at = @At("TAIL"))
-    private void markCustomPropertiesAsSet(TrackedData<?> data, CallbackInfo ci) {
-        if (TICK_TIME.equals(data)) {
-            this.tickTimeBoolean = true;
-        }
-    }
+    //?}
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void onTickEntity(CallbackInfo ci) {
-        if (this.tickTimeBoolean) {
-            this.tickTimeBoolean = false;
-        }
         ItemEntity itemEntity = (ItemEntity) (Object) this;
         World world = itemEntity.getWorld();
         if (!(world instanceof ServerWorld serverWorld)) return;

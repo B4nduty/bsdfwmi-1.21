@@ -62,15 +62,12 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
     // ========== Entity Tick Settings ==========
     @Config(name = TickTweaks.MOD_ID + "-entityTickSettings")
     public static final class EntityTickSettings implements ConfigData {
-        // Living Entities
         @ConfigEntry.Gui.CollapsibleObject
         public LivingEntitySettings livingEntities = new LivingEntitySettings();
 
-        // Item Entities
         @ConfigEntry.Gui.CollapsibleObject
         public ItemEntitySettings itemEntities = new ItemEntitySettings();
 
-        // Block Entities
         @ConfigEntry.Gui.CollapsibleObject
         public BlockEntitySettings blockEntities = new BlockEntitySettings();
 
@@ -118,7 +115,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             }
 
             public double getDetectionRange() {
-                return Math.clamp(detectionRange, 0.5, 10);
+                return Math.min(10, Math.max(detectionRange, 0.5));
             }
         }
 
@@ -140,11 +137,9 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
     // ========== Performance Settings ==========
     @Config(name = TickTweaks.MOD_ID + "-performanceSettings")
     public static final class PerformanceSettings implements ConfigData {
-        // Activation Ranges
         @ConfigEntry.Gui.CollapsibleObject
         public ActivationRangeSettings activationRanges = new ActivationRangeSettings();
 
-        // Mob Despawn
         @ConfigEntry.Gui.CollapsibleObject
         public MobDespawnSettings mobDespawn = new MobDespawnSettings();
 
@@ -156,27 +151,16 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, settingsCacheTime);
         }
 
-        public static class ActivationRangeSettings {
+        public static class ActivationRangeSettings implements ConfigData {
             @ConfigEntry.Gui.Tooltip(count = 0)
             @Comment("Enable custom activation ranges")
             public boolean enabled = false;
 
             @ConfigEntry.Gui.CollapsibleObject
-            public DefaultActivationRange defaultRange = new DefaultActivationRange(16, -1, -1);
+            public DefaultActivationRange defaultRange = new DefaultActivationRange();
 
             @ConfigEntry.Gui.Tooltip(count = 0)
-            public List<CustomActivationRange> customRanges = new ArrayList<>(List.of(
-                    new CustomActivationRange(
-                            "farm",
-                            20, 20, 20,
-                            List.of("minecraft:cow", "minecraft:chicken", "minecraft:pig")
-                    ),
-                    new CustomActivationRange(
-                            "hostile",
-                            48, -1, 20,
-                            List.of("#minecraft:hostile")
-                    )
-            ));
+            public List<CustomActivationRange> customRanges = new ArrayList<>();
 
             public boolean isEnabled() {
                 return enabled;
@@ -192,26 +176,18 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         public static class DefaultActivationRange {
-            public int range;
-            public int tickInterval;
-            public int wakeupInterval;
+            public int range = 16;
+            public int tickInterval = -1;
+            public int wakeupInterval = -1;
 
-            public DefaultActivationRange() {
-                this(16, -1, -1);
-            }
+            public DefaultActivationRange() {}
 
-            public DefaultActivationRange(int range, int tickInterval, int wakeupInterval) {
-                this.range = range;
-                this.tickInterval = tickInterval;
-                this.wakeupInterval = wakeupInterval;
+            public int getTickInterval() {
+                return tickInterval;
             }
 
             public int getRange() {
                 return range;
-            }
-
-            public int getTickInterval() {
-                return tickInterval;
             }
 
             public int getWakeupInterval() {
@@ -220,14 +196,15 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         public static class CustomActivationRange {
-            public String name;
-            public int range;
-            public int tickInterval;
-            public int wakeupInterval;
-            public List<String> entities;
+            public String name = "";
+            public int range = 0;
+            public int tickInterval = 0;
+            public int wakeupInterval = 0;
+            @ConfigEntry.Gui.Tooltip()
+            @Comment("Is valid entityId / mod-id / #mod-id:entity_tag")
+            public List<String> entities = new ArrayList<>();
 
             public CustomActivationRange() {
-                this("", 0, 0, 0, List.of());
             }
 
             public CustomActivationRange(String name, int range, int tickInterval,
@@ -236,7 +213,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
                 this.range = range;
                 this.tickInterval = tickInterval;
                 this.wakeupInterval = wakeupInterval;
-                this.entities = entities;
+                this.entities = new ArrayList<>(entities);
             }
 
             public String getName() {

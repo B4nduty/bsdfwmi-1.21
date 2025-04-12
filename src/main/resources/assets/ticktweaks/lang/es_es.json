@@ -45,6 +45,7 @@
   "text.autoconfig.ticktweaks.option.CustomActivationRange.tickInterval": "Intervalo Ticks",
   "text.autoconfig.ticktweaks.option.CustomActivationRange.wakeupInterval": "Reactivar Cada",
   "text.autoconfig.ticktweaks.option.CustomActivationRange.entities": "Entidades",
+  "text.autoconfig.ticktweaks.option.CustomActivationRange.entities.@Tooltip": "Es válido entityId / mod-id / #mod-id:entity_tag",
 
   "text.autoconfig.ticktweaks.option.performanceSettings.mobDespawn": "Desaparición Mobs",
   "text.autoconfig.ticktweaks.option.performanceSettings.mobDespawn.despawnTime": "Ticks hasta desaparición",

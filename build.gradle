@@ -5,6 +5,7 @@ plugins {
 
 version = project.mod_version
 group = project.maven_group
+minecraft_version_range = project.minecraft_version_range
 
 base {
 	archivesName = project.archives_base_name
@@ -39,14 +40,17 @@ dependencies {
 	modApi "com.terraformersmc:modmenu:${project.modmenu}"
 
 	include modImplementation(project(':streq'))
-	
 }
 
 processResources {
 	inputs.property "version", project.version
+	inputs.property "minecraft_version_range", project.minecraft_version_range
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand (
+				"version": project.version,
+				"minecraft_version_range": project.minecraft_version_range
+		)
 	}
 }
 
@@ -56,9 +60,10 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
 	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	def java = project.minecraft_version >= "1.20.5"
+			? JavaVersion.VERSION_21 : JavaVersion.VERSION_17
+	targetCompatibility = java
+	sourceCompatibility = java
 }
 
 jar {

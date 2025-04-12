@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Collections;
 import java.util.List;
 
 import static banduty.ticktweaks.TickTweaks.ACTIVATION_CACHE;
@@ -28,25 +29,31 @@ public class LivingEntityMixin {
     @Unique
     private static final TrackedData<Integer> TICK_TIME;
     @Unique
-    private static final TrackedData<Boolean> SLEEP;
-    @Unique
     private final LivingEntity livingEntity = (LivingEntity) (Object) this;
     @Unique
     private int wakeupInterval = 0;
     @Unique
-    private ModConfigs.PerformanceSettings.DefaultActivationRange defaultActivationRange;
+    private ModConfigs.PerformanceSettings.CustomActivationRange customActivationRange;
 
     static {
         TICK_TIME = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
-        SLEEP = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
 
+    //? if >= 1.19.3 && <= 1.20.4 {
+    /*@Inject(method = "initDataTracker", at = @At("TAIL"))
+    private void addCustomPropertiesToDataTracker(CallbackInfo ci) {
+        if (livingEntity instanceof PlayerEntity) return;
+        ((LivingEntity) (Object) this).getDataTracker().startTracking(TICK_TIME, 0);
+    }
+    *///?}
+
+    //? if >= 1.20.5 {
     @Inject(method = "initDataTracker", at = @At("TAIL"))
     private void addCustomPropertiesToDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
         if (livingEntity instanceof PlayerEntity) return;
         builder.add(TICK_TIME, 0);
-        builder.add(SLEEP, false);
     }
+    //?}
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void onTickEntity(CallbackInfo ci) {
@@ -56,25 +63,33 @@ public class LivingEntityMixin {
 
         ModConfigs.PerformanceSettings.ActivationRangeSettings activationSettings = TickTweaks.CONFIG.performanceSettings.activationRanges;
         int currentTickTime = getTickTime();
-        boolean isUpdateSleeping = livingEntity.getDataTracker().get(SLEEP);
 
-        if (defaultActivationRange != null) {
-            int wakeupInt = defaultActivationRange.getWakeupInterval();
-            if (wakeupInt > 0 && wakeupInterval < wakeupInt && isUpdateSleeping) {
+        if (activationSettings.isEnabled() && customActivationRange != null) {
+            int wakeupInt = customActivationRange.getWakeupInterval();
+            if (wakeupInt > 0 && wakeupInterval < wakeupInt) {
                 wakeupInterval++;
-                int tickInt = defaultActivationRange.getTickInterval();
-                if (tickInt < 0 || currentTickTime < tickInt) {
+                int tickInt = customActivationRange.getTickInterval();
+                if (currentTickTime < tickInt) {
                     setTickTime(currentTickTime + 1);
                     ci.cancel();
                     return;
                 }
-                setTickTime(0);
-                wakeupInterval = 0;
-                return;
+            }
+        } else {
+            ModConfigs.PerformanceSettings.DefaultActivationRange defaultActivationRange = TickTweaks.CONFIG.performanceSettings.activationRanges.getDefaultRange();
+            int wakeupInt = defaultActivationRange.getWakeupInterval();
+            if (wakeupInt > 0 && wakeupInterval < wakeupInt) {
+                wakeupInterval++;
+                int tickInt = defaultActivationRange.getTickInterval();
+                if (currentTickTime < tickInt) {
+                    setTickTime(currentTickTime + 1);
+                    ci.cancel();
+                    return;
+                }
             }
         }
 
-        livingEntity.getDataTracker().set(SLEEP, false);
+        setTickTime(0);
         wakeupInterval = 0;
 
         if (activationSettings.isEnabled()) {
@@ -106,15 +121,12 @@ public class LivingEntityMixin {
 
     @Unique
     private void handleCustomActivationWithCache(ServerWorld world, CallbackInfo ci, int currentTickTime) {
-        if (defaultActivationRange == null) {
-            defaultActivationRange = getActivationTypeForEntity();
-        }
+        customActivationRange = getActivationTypeForEntity();
 
-        boolean withinRadius = TickHandlerUtil.isEntityWithinRadius(livingEntity, world, defaultActivationRange.getRange());
-        int tickInt = defaultActivationRange.getTickInterval();
+        boolean withinRadius = TickHandlerUtil.isEntityWithinRadius(livingEntity, world, customActivationRange.getRange());
+        int tickInt = customActivationRange.getTickInterval();
 
         if ((tickInt < 0 || currentTickTime < tickInt) && !withinRadius) {
-            livingEntity.getDataTracker().set(SLEEP, true);
             ci.cancel();
             return;
         }
@@ -123,20 +135,26 @@ public class LivingEntityMixin {
     }
 
     @Unique
-    private ModConfigs.PerformanceSettings.DefaultActivationRange getActivationTypeForEntity() {
+    private ModConfigs.PerformanceSettings.CustomActivationRange getActivationTypeForEntity() {
         EntityType<?> type = livingEntity.getType();
         return ACTIVATION_CACHE.computeIfAbsent(type, t -> {
             ModConfigs.PerformanceSettings.ActivationRangeSettings settings = TickTweaks.CONFIG.performanceSettings.activationRanges;
-            for (ModConfigs.PerformanceSettings.CustomActivationRange custom : settings.getCustomRanges()) {
+            List<ModConfigs.PerformanceSettings.CustomActivationRange> customRanges = settings.getCustomRanges();
+
+            for (ModConfigs.PerformanceSettings.CustomActivationRange custom : customRanges) {
                 if (TickHandlerUtil.matchesEntity(livingEntity, custom.getEntities())) {
-                    return new ModConfigs.PerformanceSettings.DefaultActivationRange(
-                            custom.getRange(),
-                            custom.getTickInterval(),
-                            custom.getWakeupInterval()
-                    );
+                    return custom;
                 }
             }
-            return settings.getDefaultRange();
+
+            ModConfigs.PerformanceSettings.DefaultActivationRange defaultRange = settings.getDefaultRange();
+            return new ModConfigs.PerformanceSettings.CustomActivationRange(
+                    "default",
+                    defaultRange.getRange(),
+                    defaultRange.getTickInterval(),
+                    defaultRange.getWakeupInterval(),
+                    Collections.emptyList()
+            );
         });
     }
 

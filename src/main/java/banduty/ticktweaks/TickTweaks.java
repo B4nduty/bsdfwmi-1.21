@@ -18,7 +18,7 @@ public class TickTweaks implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static long lastCacheClear = System.currentTimeMillis();
 
-	public static final WeakHashMap<EntityType<?>, ModConfigs.PerformanceSettings.DefaultActivationRange> ACTIVATION_CACHE = new WeakHashMap<>();
+	public static final WeakHashMap<EntityType<?>, ModConfigs.PerformanceSettings.CustomActivationRange> ACTIVATION_CACHE = new WeakHashMap<>();
 
 	@Override
 	public void onInitialize() {

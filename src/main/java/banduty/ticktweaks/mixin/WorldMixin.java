@@ -19,7 +19,13 @@ public abstract class WorldMixin {
     private void onTickBlockEntities(CallbackInfo ci) {
         World world = (World) (Object) this;
         if (!(world instanceof ServerWorld serverWorld)) return;
-        double tps = Math.min(1000.0 / serverWorld.getServer().getAverageTickTime(), 20.0);
+        double tps = Math.min(1000.0 / serverWorld.getServer()
+                        //? if >= 1.20.3 {
+                        .getAverageTickTime()
+                //?} else if >= 1.19.3 && <= 1.20.2 {
+                /*.getTickTime()
+                 *///?}
+                , 20.0);
         if (TickRateCalculator.shouldSkipTicking(serverWorld)) return;
         if (!TickTweaks.CONFIG.entityTickSettings.blockEntities.enabled) return;
         if (tps < TickTweaks.CONFIG.emergencySettings.getTpsThreshold()) ci.cancel();
