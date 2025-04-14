@@ -47,12 +47,12 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         }
 
         @ConfigEntry.Gui.Tooltip(count = 0)
-        @Comment("List of dimensions where custom ticking is enabled")
-        public List<String> enabledDimensions = List.of(
-                "minecraft:overworld",
-                "minecraft:the_nether",
-                "minecraft:the_end"
-        );
+        @Comment("""
+                List of dimensions where custom ticking is enabled
+                To don't break the configs, it is necessary that you put manually the worlds.
+                Sorry for the inconveniences.
+                """)
+        public List<String> enabledDimensions = new ArrayList<>();
 
         public boolean isDimensionEnabled(RegistryKey<World> dimension) {
             return enabledDimensions.contains(dimension.getValue().toString());
@@ -71,7 +71,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
         @ConfigEntry.Gui.CollapsibleObject
         public BlockEntitySettings blockEntities = new BlockEntitySettings();
 
-        public static class LivingEntitySettings implements ConfigData {
+        public static class LivingEntitySettings {
             @ConfigEntry.Gui.Tooltip()
             @Comment("Fixed tick rate for living entities (0 for dynamic TPS-based rate)")
             public int fixedTickRate = 0;
@@ -82,7 +82,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
 
             @ConfigEntry.Gui.Tooltip(count = 0)
             @Comment("List of living entities exempt from tick adjustments")
-            public List<String> exemptEntities = List.of("#minecraft:hostile", "minecraft:ender_dragon");
+            public List<String> exemptEntities = new ArrayList<>();
 
             public int getFixedTickRate() {
                 return Math.max(0, fixedTickRate);
@@ -97,7 +97,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             }
         }
 
-        public static class ItemEntitySettings implements ConfigData {
+        public static class ItemEntitySettings {
             @ConfigEntry.Gui.Tooltip()
             @Comment("Fixed tick rate for item entities (0 for dynamic TPS-based rate)")
             public int fixedTickRate = 0;
@@ -119,7 +119,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             }
         }
 
-        public static class BlockEntitySettings implements ConfigData {
+        public static class BlockEntitySettings {
             @ConfigEntry.Gui.Tooltip()
             @Comment("Fixed tick rate for block entities (0 for dynamic TPS-based rate)")
             public int fixedTickRate = 0;
@@ -151,7 +151,7 @@ public class ModConfigs extends PartitioningSerializer.GlobalData {
             return Math.max(0, settingsCacheTime);
         }
 
-        public static class ActivationRangeSettings implements ConfigData {
+        public static class ActivationRangeSettings {
             @ConfigEntry.Gui.Tooltip(count = 0)
             @Comment("Enable custom activation ranges")
             public boolean enabled = false;
