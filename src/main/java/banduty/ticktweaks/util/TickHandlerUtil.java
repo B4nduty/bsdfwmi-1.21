@@ -88,7 +88,12 @@ public class TickHandlerUtil {
         final String entityId = EntityType.getId(type).toString();
         final Registry<EntityType<?>> registry = entity.getWorld()
                 .getRegistryManager()
-                .get(Registries.ENTITY_TYPE.getKey());
+                //? if >= 1.21.5 {
+                .getOrThrow(Registries.ENTITY_TYPE.getKey());
+        //?} else if >= 1.19.3 && <= 1.21.4 {
+        /*.get(Registries.ENTITY_TYPE.getKey());
+         *///?}
+
 
         return matchers.stream().anyMatch(matcher ->
                 checkMatch(matcher, entityId, registry, type)
@@ -120,7 +125,13 @@ public class TickHandlerUtil {
                     return false;
                 }
 
-                Optional<RegistryEntryList.Named<EntityType<?>>> optional = registry.getEntryList(tagKey);
+                Optional<RegistryEntryList.Named<EntityType<?>>> optional = registry
+                        //? if >= 1.21.5 {
+                        .getOptional(tagKey);
+                //?} else if >= 1.19.3 && <= 1.21.4 {
+                /*.getEntryList(tagKey);
+                 *///?}
+
                 return optional.map(registryEntries -> registryEntries.contains(registry.getEntry(type))).orElse(false);
             } catch (Exception e) {
                 TickTweaks.LOGGER.error("Error checking entity tag match for {}", matcher, e);
