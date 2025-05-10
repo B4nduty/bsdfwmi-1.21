@@ -4,10 +4,6 @@ import banduty.ticktweaks.TickTweaks;
 import banduty.ticktweaks.util.TickHandlerUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
@@ -19,14 +15,15 @@ import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin {
-    @Unique
-    private static final TrackedData<Integer> TICK_TIME;
 
-    static {
-        TICK_TIME = DataTracker.registerData(ItemEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    }
+    @Unique
+    private static final Map<ItemEntity, Integer> TICK_TIME_MAP = Collections.synchronizedMap(new WeakHashMap<>());
 
     @Unique
     double itemDetectionRange = TickTweaks.CONFIG.entityTickSettings.itemEntities.getDetectionRange();
@@ -42,20 +39,6 @@ public abstract class ItemEntityMixin {
         }
     }
 
-    //? if >= 1.19.3 && <= 1.20.4 {
-    /*@Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void addCustomPropertiesToDataTracker(CallbackInfo ci) {
-        ((ItemEntity) (Object) this).getDataTracker().startTracking(TICK_TIME, 0);
-    }
-    *///?}
-
-    //? if >= 1.20.5 {
-    @Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void addCustomPropertiesToDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
-        builder.add(TICK_TIME, 0);
-    }
-    //?}
-
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void onTickEntity(CallbackInfo ci) {
         ItemEntity itemEntity = (ItemEntity) (Object) this;
@@ -63,21 +46,12 @@ public abstract class ItemEntityMixin {
         if (!(world instanceof ServerWorld serverWorld)) return;
 
         MinecraftServer server = serverWorld.getServer();
+        int currentTickTime = TICK_TIME_MAP.getOrDefault(itemEntity, 0);
 
         if (!TickTweaks.CONFIG.entityTickSettings.itemEntities.enabled || TickHandlerUtil.tickCancellation(server, ci, true,
-                TickTweaks.CONFIG.entityTickSettings.itemEntities.getFixedTickRate(), getTickTime(), 0))
-            setTickTime(0);
+                TickTweaks.CONFIG.entityTickSettings.itemEntities.getFixedTickRate(), currentTickTime, 0))
+            TICK_TIME_MAP.put(itemEntity, 0);
 
-        setTickTime(getTickTime() + 1);
-    }
-
-    @Unique
-    private int getTickTime() {
-        return ((ItemEntity) (Object) this).getDataTracker().get(TICK_TIME);
-    }
-
-    @Unique
-    private void setTickTime(int tickTime) {
-        ((ItemEntity) (Object) this).getDataTracker().set(TICK_TIME, tickTime);
+        TICK_TIME_MAP.put(itemEntity, currentTickTime + 1);
     }
 }

@@ -6,9 +6,6 @@ import banduty.ticktweaks.util.TickHandlerUtil;
 import banduty.ticktweaks.util.TickRateCalculator;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
@@ -21,39 +18,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import static banduty.ticktweaks.TickTweaks.ACTIVATION_CACHE;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
     @Unique
-    private static final TrackedData<Integer> TICK_TIME;
+    private static final Map<LivingEntity, Integer> TICK_TIME_MAP = Collections.synchronizedMap(new WeakHashMap<>());
     @Unique
     private final LivingEntity livingEntity = (LivingEntity) (Object) this;
     @Unique
-    private int wakeupInterval = 0;
+    private static final Map<LivingEntity, Integer> WAKEUP_INTERVAL_MAP = Collections.synchronizedMap(new WeakHashMap<>());
     @Unique
     private ModConfigs.PerformanceSettings.CustomActivationRange customActivationRange;
-
-    static {
-        TICK_TIME = DataTracker.registerData(LivingEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    }
-
-    //? if >= 1.19.3 && <= 1.20.4 {
-    /*@Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void addCustomPropertiesToDataTracker(CallbackInfo ci) {
-        if (livingEntity instanceof PlayerEntity) return;
-        ((LivingEntity) (Object) this).getDataTracker().startTracking(TICK_TIME, 0);
-    }
-    *///?}
-
-    //? if >= 1.20.5 {
-    @Inject(method = "initDataTracker", at = @At("TAIL"))
-    private void addCustomPropertiesToDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
-        if (livingEntity instanceof PlayerEntity) return;
-        builder.add(TICK_TIME, 0);
-    }
-    //?}
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void onTickEntity(CallbackInfo ci) {
@@ -62,15 +41,16 @@ public class LivingEntityMixin {
                 TickRateCalculator.shouldSkipTicking(serverWorld) || livingEntity.getHealth() <= 0.0F) return;
 
         ModConfigs.PerformanceSettings.ActivationRangeSettings activationSettings = TickTweaks.CONFIG.performanceSettings.activationRanges;
-        int currentTickTime = getTickTime();
+        int currentTickTime = TICK_TIME_MAP.getOrDefault(livingEntity, 0);
+        int wakeupInterval = WAKEUP_INTERVAL_MAP.getOrDefault(livingEntity, 0);
 
         if (activationSettings.isEnabled() && customActivationRange != null) {
             int wakeupInt = customActivationRange.getWakeupInterval();
             if (wakeupInt > 0 && wakeupInterval < wakeupInt) {
-                wakeupInterval++;
+                WAKEUP_INTERVAL_MAP.put(livingEntity, wakeupInterval + 1);
                 int tickInt = customActivationRange.getTickInterval();
                 if (currentTickTime < tickInt) {
-                    setTickTime(currentTickTime + 1);
+                    TICK_TIME_MAP.put(livingEntity, currentTickTime + 1);
                     ci.cancel();
                     return;
                 }
@@ -79,18 +59,18 @@ public class LivingEntityMixin {
             ModConfigs.PerformanceSettings.DefaultActivationRange defaultActivationRange = TickTweaks.CONFIG.performanceSettings.activationRanges.getDefaultRange();
             int wakeupInt = defaultActivationRange.getWakeupInterval();
             if (wakeupInt > 0 && wakeupInterval < wakeupInt) {
-                wakeupInterval++;
+                WAKEUP_INTERVAL_MAP.put(livingEntity, wakeupInterval + 1);
                 int tickInt = defaultActivationRange.getTickInterval();
                 if (currentTickTime < tickInt) {
-                    setTickTime(currentTickTime + 1);
+                    TICK_TIME_MAP.put(livingEntity, currentTickTime + 1);
                     ci.cancel();
                     return;
                 }
             }
         }
 
-        setTickTime(0);
-        wakeupInterval = 0;
+        TICK_TIME_MAP.put(livingEntity, 0);
+        WAKEUP_INTERVAL_MAP.put(livingEntity, 0);
 
         if (activationSettings.isEnabled()) {
             handleCustomActivationWithCache(serverWorld, ci, currentTickTime);
@@ -111,12 +91,12 @@ public class LivingEntityMixin {
             MinecraftServer server = serverWorld.getServer();
             boolean shouldCancel = TickHandlerUtil.tickCancellation(server, ci, withinRadius, tickRate, currentTickTime, defaultRange.getTickInterval());
             if (shouldCancel) {
-                setTickTime(0);
+                TICK_TIME_MAP.put(livingEntity, 0);
                 return;
             }
         }
 
-        setTickTime(currentTickTime + 1);
+        TICK_TIME_MAP.put(livingEntity, currentTickTime + 1);
     }
 
     @Unique
@@ -131,7 +111,7 @@ public class LivingEntityMixin {
             return;
         }
 
-        setTickTime(0);
+        TICK_TIME_MAP.put(livingEntity, 0);
     }
 
     @Unique
@@ -156,15 +136,5 @@ public class LivingEntityMixin {
                     Collections.emptyList()
             );
         });
-    }
-
-    @Unique
-    private int getTickTime() {
-        return livingEntity.getDataTracker().get(TICK_TIME);
-    }
-
-    @Unique
-    private void setTickTime(int tickTime) {
-        livingEntity.getDataTracker().set(TICK_TIME, tickTime);
     }
 }

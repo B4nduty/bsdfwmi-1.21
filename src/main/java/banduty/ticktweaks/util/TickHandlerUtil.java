@@ -89,10 +89,10 @@ public class TickHandlerUtil {
         final Registry<EntityType<?>> registry = entity.getWorld()
                 .getRegistryManager()
                 //? if >= 1.21.5 {
-                .getOrThrow(Registries.ENTITY_TYPE.getKey());
-        //?} else if >= 1.19.3 && <= 1.21.4 {
-        /*.get(Registries.ENTITY_TYPE.getKey());
-         *///?}
+                /*.getOrThrow(Registries.ENTITY_TYPE.getKey());
+        *///?} else if >= 1.19.3 && <= 1.21.4 {
+        .get(Registries.ENTITY_TYPE.getKey());
+         //?}
 
 
         return matchers.stream().anyMatch(matcher ->
@@ -127,10 +127,10 @@ public class TickHandlerUtil {
 
                 Optional<RegistryEntryList.Named<EntityType<?>>> optional = registry
                         //? if >= 1.21.5 {
-                        .getOptional(tagKey);
-                //?} else if >= 1.19.3 && <= 1.21.4 {
-                /*.getEntryList(tagKey);
-                 *///?}
+                        /*.getOptional(tagKey);
+                *///?} else if >= 1.19.3 && <= 1.21.4 {
+                .getEntryList(tagKey);
+                 //?}
 
                 return optional.map(registryEntries -> registryEntries.contains(registry.getEntry(type))).orElse(false);
             } catch (Exception e) {

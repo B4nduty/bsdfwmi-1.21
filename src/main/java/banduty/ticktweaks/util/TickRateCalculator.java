@@ -13,10 +13,10 @@ public class TickRateCalculator {
     public static int getCustomTickRate(MinecraftServer server, int specificTickRate) {
         float tickTime = server
         //? if >= 1.20.3 {
-        .getAverageTickTime();
-        //?} else if >= 1.19.3 && <= 1.20.2 {
-        /*.getTickTime();
-        *///?}
+        /*.getAverageTickTime();
+        *///?} else if >= 1.19.3 && <= 1.20.2 {
+        .getTickTime();
+        //?}
 
         double tps = Math.min(1000.0 / tickTime, 20.0);
 
