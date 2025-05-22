@@ -2,10 +2,18 @@ package banduty.ticktweaks.mixin;
 
 import banduty.ticktweaks.TickTweaks;
 import banduty.ticktweaks.util.TickHandlerUtil;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.network.PacketByteBuf;
+//? if >= 1.20.5 {
+    import net.minecraft.network.packet.CustomPayload;
+    import net.minecraft.network.packet.s2c.common.CustomPayloadS2CPacket;
+//?}
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,6 +35,15 @@ public abstract class ItemEntityMixin {
 
     @Unique
     double itemDetectionRange = TickTweaks.CONFIG.entityTickSettings.itemEntities.getDetectionRange();
+
+
+    //? if >= 1.20.5 {
+    @Unique
+    private static final CustomPayload.Id<? extends CustomPayload> DUMMY_SYNC_PACKET = new CustomPayload.Id<>(Identifier.of(TickTweaks.MOD_ID, "dummy_sync"));
+     //?} else if >= 1.19.3 && <= 1.20.4 {
+    /*@Unique
+    private static final Identifier DUMMY_SYNC_PACKET = new Identifier(TickTweaks.MOD_ID, "dummy_sync");
+     *///?}
 
     @ModifyArgs(
             method = "tryMerge()V",
@@ -53,5 +70,27 @@ public abstract class ItemEntityMixin {
             TICK_TIME_MAP.put(itemEntity, 0);
 
         TICK_TIME_MAP.put(itemEntity, currentTickTime + 1);
+        sendDummyPacket(itemEntity);
+    }
+
+    @Unique
+    private void sendDummyPacket(ItemEntity entity) {
+        ServerWorld world = (ServerWorld) entity.getWorld();
+        //? if >= 1.20.5 {
+        world.getPlayers(player -> player.canSee(entity))
+                .forEach(player -> {
+                    player.networkHandler.sendPacket(
+                            new CustomPayloadS2CPacket(
+                                    () -> DUMMY_SYNC_PACKET
+                            )
+                    );
+                });
+        //?} else if >= 1.19.3 && <= 1.20.4 {
+        /*PacketByteBuf buf = PacketByteBufs.create();
+        world.getPlayers(serverPlayerEntity -> serverPlayerEntity.canSee(entity))
+                .forEach(serverPlayerEntity -> {
+                    ServerPlayNetworking.send(serverPlayerEntity, DUMMY_SYNC_PACKET, buf);
+                });
+        *///?}
     }
 }
