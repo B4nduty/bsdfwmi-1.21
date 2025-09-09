@@ -23,6 +23,7 @@ public class TickRateCalculator {
         String formula = TickTweaks.CONFIG.coreTickSettings.getTickRateFormula();
         Map<String, Double> variables = new HashMap<>();
         variables.put("tps", tps);
+        variables.put("mspt", (double) tickTime);
 
         int customTickRate = (int) Math.round(Math.min(20, StrEq.evaluate(formula, variables)));
 

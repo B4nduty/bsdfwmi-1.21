@@ -69,7 +69,6 @@ public class LivingEntityMixin {
             }
         }
 
-        TICK_TIME_MAP.put(livingEntity, 0);
         WAKEUP_INTERVAL_MAP.put(livingEntity, 0);
 
         if (activationSettings.isEnabled()) {
